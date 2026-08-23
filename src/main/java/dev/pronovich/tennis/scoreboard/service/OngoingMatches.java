@@ -1,0 +1,27 @@
+package dev.pronovich.tennis.scoreboard.service;
+
+import dev.pronovich.tennis.scoreboard.model.Match;
+
+import java.util.HashMap;
+import java.util.Optional;
+import java.util.UUID;
+
+public class OngoingMatches implements OngoingMatchesStorage{
+
+    private HashMap<UUID, Match> matchesMap = new HashMap<>();
+
+    @Override
+    public void save(Match match) {
+        matchesMap.computeIfAbsent(match.getUuid(),k -> match);
+    }
+
+    @Override
+    public Optional<Match> findById(int id) {
+        return Optional.empty();
+    }
+
+    @Override
+    public void remove(int id) {
+
+    }
+}
