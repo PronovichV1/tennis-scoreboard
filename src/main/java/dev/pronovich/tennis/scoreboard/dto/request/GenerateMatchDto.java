@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard.dto;
+package dev.pronovich.tennis.scoreboard.dto.request;
 
 
 import dev.pronovich.tennis.scoreboard.exception.InvalidFormatException;

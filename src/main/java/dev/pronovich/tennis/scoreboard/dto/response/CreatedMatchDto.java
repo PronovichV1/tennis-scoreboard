@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard.dto.request.response;
+package dev.pronovich.tennis.scoreboard.dto.response;
 
 
 public record CreatedMatchDto(String id) {
