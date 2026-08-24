@@ -16,12 +16,12 @@ public class OngoingMatches implements OngoingMatchesStorage{
     }
 
     @Override
-    public Optional<Match> findById(int id) {
+    public Optional<Match> findById(UUID id) {
         return Optional.empty();
     }
 
     @Override
-    public void remove(int id) {
+    public void remove(UUID id) {
 
     }
 }
