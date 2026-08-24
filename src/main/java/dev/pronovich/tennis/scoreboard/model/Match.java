@@ -21,6 +21,7 @@ public class Match {
     @ManyToOne
     @JoinColumn(name="player1")
     private Player player1;
+
     @ManyToOne
     @JoinColumn(name="player2")
     private Player player2;
