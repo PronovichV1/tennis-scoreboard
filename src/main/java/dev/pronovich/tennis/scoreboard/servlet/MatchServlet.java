@@ -1,8 +1,7 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
-import dev.pronovich.tennis.scoreboard.dto.GenerateMatchDto;
+import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.model.Match;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.FinishedMatchManager;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +29,7 @@ public class MatchServlet {
         String firstPlayer = generatedMatch.firstPlayerName();
         String secondPlayer = generatedMatch.secondPlayerName();
         Match match = matchManager.generateMatch(firstPlayer, secondPlayer);
+
         return match.getUuid();
     }
 
