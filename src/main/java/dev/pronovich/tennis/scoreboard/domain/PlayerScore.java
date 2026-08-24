@@ -1,20 +1,23 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
+import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
-@Component
+
+
 @Getter
 @Setter
 public class PlayerScore {
 
+    private Player player;
     private Integer points;
     private Integer games;
     private Integer sets;
     private Integer tieBreakPoints;
 
-    public PlayerScore() {
+    public PlayerScore(Player player) {
+        this.player = player;
         points = 0;
         games = 0;
         sets = 0;
