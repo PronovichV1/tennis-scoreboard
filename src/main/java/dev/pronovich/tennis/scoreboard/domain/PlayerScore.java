@@ -11,14 +11,14 @@ import lombok.Setter;
 public class PlayerScore {
 
     private Player player;
-    private Integer points;
+    private Points points;
     private Integer games;
     private Integer sets;
     private Integer tieBreakPoints;
 
     public PlayerScore(Player player) {
         this.player = player;
-        points = 0;
+        points = Points.ZERO;
         games = 0;
         sets = 0;
         tieBreakPoints = null;

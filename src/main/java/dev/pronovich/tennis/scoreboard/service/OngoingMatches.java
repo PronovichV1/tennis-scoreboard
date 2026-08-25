@@ -1,5 +1,7 @@
 package dev.pronovich.tennis.scoreboard.service;
 
+import dev.pronovich.tennis.scoreboard.exception.InvalidFormatException;
+import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 
 import java.util.HashMap;
@@ -17,7 +19,7 @@ public class OngoingMatches implements OngoingMatchesStorage{
 
     @Override
     public Optional<Match> findById(UUID id) {
-        return Optional.empty();
+        return Optional.of(matchesMap.get(id));
     }
 
     @Override

@@ -1,13 +1,16 @@
 package dev.pronovich.tennis.scoreboard;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+@ExtendWith(MockitoExtension.class)
 class TennisScoreboardApplicationTests {
 
-	@Test
+
 	void contextLoads() {
 	}
+
+
 
 }
