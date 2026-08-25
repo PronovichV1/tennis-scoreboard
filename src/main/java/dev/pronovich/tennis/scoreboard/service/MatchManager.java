@@ -25,8 +25,5 @@ public class MatchManager {
 
     public void addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid());
-        scoreEngine.addPointsTo()
-
-
     }
 }
