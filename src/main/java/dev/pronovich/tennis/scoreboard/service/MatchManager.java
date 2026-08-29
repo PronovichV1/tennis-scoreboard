@@ -1,19 +1,19 @@
 package dev.pronovich.tennis.scoreboard.service;
 
-import dev.pronovich.tennis.scoreboard.domain.ScoreEngine;
+import dev.pronovich.tennis.scoreboard.domain.engene.MatchEngine;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
-import org.mapstruct.Mapping;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MatchManager {
 
     private OngoingMatches ongoingMatches = new OngoingMatches();
-    private ScoreEngine scoreEngine;
+    private MatchEngine matchEngine;
 
-    public MatchManager(ScoreEngine scoreEngine) {
-        this.scoreEngine = scoreEngine;
+    public MatchManager(MatchEngine matchEngine) {
+        this.matchEngine = matchEngine;
     }
 
 
@@ -23,7 +23,9 @@ public class MatchManager {
         return match;
     }
 
-    public void addPointsTo(Match match, Player player) {
+    public Match addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid());
+        matchEngine.calculation(player, currentMatch.getMatchScore());
+        return currentMatch;
     }
 }
