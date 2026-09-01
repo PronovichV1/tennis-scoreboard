@@ -31,7 +31,7 @@ public class MatchScore {
     }
 
     public PlayerScore getAnotherPlayerScore(Player player) {
-        if (playerScore1.getPlayer().getName().equals(player)) {
+        if (playerScore1.getPlayer().getName().equals(player.getName())) {
             return playerScore2;
         } else {
             return playerScore1;

@@ -43,6 +43,6 @@ public class PlayerScore {
     }
 
     public void resetPoints(){
-        points = Points.ZERO;
+        this.points = Points.ZERO;
     }
 }

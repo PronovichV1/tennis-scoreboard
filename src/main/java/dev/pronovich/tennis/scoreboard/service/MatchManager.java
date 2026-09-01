@@ -2,6 +2,7 @@ package dev.pronovich.tennis.scoreboard.service;
 
 import dev.pronovich.tennis.scoreboard.domain.engene.MatchEngine;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class MatchManager {
     }
 
     public Match addPointsTo(Match match, Player player) {
-        Match currentMatch = ongoingMatches.findById(match.getUuid());
+        Match currentMatch = ongoingMatches.findById(match.getUuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + player.getId() + ") isn't exist." ));
         matchEngine.calculation(player, currentMatch.getMatchScore());
         return currentMatch;
     }

@@ -29,7 +29,7 @@ public class MatchEngine implements Engine {
 
 
             concretePlayerScore.addGamesScore(); /// add points
-            resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
+
 
             if (isPlayerWinSet(concretePlayerScore, rivalPlayerScore)){ /// win set
                 concretePlayerScore.addSetsScore();
@@ -45,10 +45,7 @@ public class MatchEngine implements Engine {
         return false; /// ADD IMPLEMENTATION
     }
 
-    private void resetPointsOfBothPlayers(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        concretePlayerScore.resetPoints();
-        rivalPlayerScore.resetPoints();
-    }
+
 
 
     private boolean isPlayerWinMatch(Player player, MatchScore matchScore) {
