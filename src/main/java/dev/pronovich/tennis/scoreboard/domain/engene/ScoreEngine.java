@@ -26,7 +26,6 @@ public class ScoreEngine implements Engine {
         /// AD / 40  -> winGame
         if (concretePlayerScore.getPoints() == Points.ADVANTAGE &&
         rivalPlayerScore.getPoints() == Points.FORTY){
-            concretePlayerScore.addPoints();
             gameIsWonByCooncretePlayer = true;
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
             return;
@@ -35,9 +34,8 @@ public class ScoreEngine implements Engine {
         /// 40 / AD -> 40 / 40
         if (concretePlayerScore.getPoints() == Points.FORTY &&
         rivalPlayerScore.getPoints() == Points.ADVANTAGE){
-            concretePlayerScore.addPoints();
             gameIsWonByCooncretePlayer = true;
-            resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
+            rivalPlayerScore.setPoints(Points.FORTY);
             return;
         }
 

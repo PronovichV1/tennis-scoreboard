@@ -20,10 +20,52 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class ScoreTests {
 
+    @Test
+    @DisplayName("Win with advantage: AD - 40")
+    void playerWithAdvantageShouldWinTheGame(){
+        /// Arrange
+        ScoreEngine scoreEngine = new ScoreEngine();
+        Player concretePlayer = new Player("Bob");
+        Player rivalPlayer = new Player("Jon");
+        MatchScore matchScore = new MatchScore(
+                new PlayerScore(concretePlayer),
+                new PlayerScore(rivalPlayer));
+
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.ADVANTAGE);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.FORTY);
+        /// Act
+        scoreEngine.calculation(concretePlayer, matchScore);
+        ///Assert
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
+        assertEquals(true, scoreEngine.isGameWon());
+    }
+
+    @Test
+    @DisplayName("Return to DEUCE: 40 - AD")
+    void playerWithAdvantageLosesPointAndScoreReturnsToDeuce(){
+        /// Arrange
+        ScoreEngine scoreEngine = new ScoreEngine();
+        Player concretePlayer = new Player("Bob");
+        Player rivalPlayer = new Player("Jon");
+        MatchScore matchScore = new MatchScore(
+                new PlayerScore(concretePlayer),
+                new PlayerScore(rivalPlayer));
+
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ADVANTAGE);
+        /// Act
+        scoreEngine.calculation(concretePlayer, matchScore);
+        ///Assert
+        assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
+        assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
+    }
+
+
     @ParameterizedTest
     @MethodSource("provideWinningScorePairs")
     @DisplayName("Base win of the game: 40 - 30")
-    void concretePlayerShouldWinGame_WithVariousScoreCombinatioons(Points concretePlayerPoints, Points rivalPlayerPoints){
+    void concretePlayerShouldWinGame_WithVariousScoreCombinations(Points concretePlayerPoints, Points rivalPlayerPoints){
 
         ScoreEngine scoreEngine = new ScoreEngine();
         Player concretePlayer = new Player("Bob");
@@ -50,4 +92,7 @@ public class ScoreTests {
                 Arguments.of(Points.FORTY, Points.ZERO)
         );
     }
+
+
+
 }
