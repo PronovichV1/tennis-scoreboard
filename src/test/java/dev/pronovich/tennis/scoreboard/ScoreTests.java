@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class ScoreTests {
@@ -38,7 +38,7 @@ public class ScoreTests {
         ///Assert
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, scoreEngine.isGameWon());
+        assertEquals(true, scoreEngine.isGameIsWonByConcretePlayer());
     }
 
     @Test
@@ -81,7 +81,7 @@ public class ScoreTests {
 
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, scoreEngine.isGameWon());
+        assertEquals(true, scoreEngine.isGameIsWonByConcretePlayer());
     }
 
 

@@ -4,29 +4,32 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.model.Player;
+import lombok.Getter;
 
+
+@Getter
 public class ScoreEngine implements Engine {
 
-    private boolean gameIsWonByCooncretePlayer;
+    private boolean gameIsWonByConcretePlayer;
 
     @Override
     public void calculation(Player player, MatchScore matchScore) {
 
-        gameIsWonByCooncretePlayer = false;
+        gameIsWonByConcretePlayer = false;
        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
         /// 40 / 30,15,0 -> winGame
         if (concretePlayerScore.getPoints() == Points.FORTY &&
                 (rivalPlayerScore.getPoints().compareTo(Points.FORTY) < 0)){
-            gameIsWonByCooncretePlayer = true;
+            gameIsWonByConcretePlayer = true;
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
             return;
         }
         /// AD / 40  -> winGame
         if (concretePlayerScore.getPoints() == Points.ADVANTAGE &&
         rivalPlayerScore.getPoints() == Points.FORTY){
-            gameIsWonByCooncretePlayer = true;
+            gameIsWonByConcretePlayer = true;
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
             return;
         }
@@ -34,7 +37,7 @@ public class ScoreEngine implements Engine {
         /// 40 / AD -> 40 / 40
         if (concretePlayerScore.getPoints() == Points.FORTY &&
         rivalPlayerScore.getPoints() == Points.ADVANTAGE){
-            gameIsWonByCooncretePlayer = true;
+            gameIsWonByConcretePlayer = true;
             rivalPlayerScore.setPoints(Points.FORTY);
             return;
         }
@@ -43,8 +46,8 @@ public class ScoreEngine implements Engine {
 
     }
 
-    public boolean isGameWon() {
-        return gameIsWonByCooncretePlayer;
+    protected boolean isGameWon() {
+        return gameIsWonByConcretePlayer;
     }
 
     private void resetPointsOfBothPlayers(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {

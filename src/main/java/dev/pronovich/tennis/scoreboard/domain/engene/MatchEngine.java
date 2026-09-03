@@ -18,7 +18,7 @@ public class MatchEngine implements Engine {
 
 
         if (tieBreak.isOn()) {
-            tieBreak.calculation(player, matchScore);
+            tieBreak.calculation(player, matchScore); /// ADD IMPLEMENTATION
         } else {
             scoreEngine.calculation(player, matchScore);
         }
@@ -27,13 +27,12 @@ public class MatchEngine implements Engine {
             return;
         }
 
-
             concretePlayerScore.addGamesScore(); /// add points
-
 
             if (isPlayerWinSet(concretePlayerScore, rivalPlayerScore)){ /// win set
                 concretePlayerScore.addSetsScore();
                 concretePlayerScore.resetGames();
+                rivalPlayerScore.resetGames();
             }
 
             if (isPlayerWinMatch(player, matchScore)) { /// WINNER
@@ -42,7 +41,12 @@ public class MatchEngine implements Engine {
         }
 
     private boolean isPlayerWinSet(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        return false; /// ADD IMPLEMENTATION
+        ///
+        if (concretePlayerScore.getGames() > 5 &&
+        concretePlayerScore.getGames() - rivalPlayerScore.getGames() >= 2){
+            return true;
+        }
+        return false;
     }
 
 
