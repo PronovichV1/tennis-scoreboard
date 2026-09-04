@@ -20,6 +20,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(MockitoExtension.class)
 public class ScoreTests {
 
+
+    /// ADD BEFORE EACH
+    /// ADD BEFORE ALL
+
+
     @Test
     @DisplayName("Win with advantage: AD - 40")
     void playerWithAdvantageShouldWinTheGame(){

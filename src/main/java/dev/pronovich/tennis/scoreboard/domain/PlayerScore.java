@@ -45,4 +45,8 @@ public class PlayerScore {
     public void resetPoints(){
         this.points = Points.ZERO;
     }
+
+    public void addTieBreakPoints() {
+        tieBreakPoints++;
+    }
 }
