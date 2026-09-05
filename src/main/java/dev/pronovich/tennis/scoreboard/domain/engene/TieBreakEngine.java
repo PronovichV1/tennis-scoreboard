@@ -4,7 +4,10 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 
+
 public class TieBreakEngine implements Engine {
+
+
 
     private boolean isTieBreak;
     private boolean isTieBreakIsWonByConcretePlayer;
@@ -24,7 +27,6 @@ public class TieBreakEngine implements Engine {
             deactivateTieBreak(matchScore);
             isTieBreakIsWonByConcretePlayer = true;
         }
-
     }
 
     protected void activateTieBreak(MatchScore matchScore){
@@ -51,4 +53,5 @@ public class TieBreakEngine implements Engine {
     public boolean isTieBreakWon() {
         return isTieBreakIsWonByConcretePlayer;
     }
+
 }

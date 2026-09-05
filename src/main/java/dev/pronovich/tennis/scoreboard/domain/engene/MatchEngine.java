@@ -46,15 +46,21 @@ public class MatchEngine implements Engine {
             }
         }
 
-
+    /// base win
     private boolean isPlayerWinSet(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5){ /// base win
+        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5){
+            return true;
+        }
+        if (tieBreak.isTieBreakWon()){
             return true;
         }
         return false;
     }
 
+    /// best of 3
+    /// Win a whole game
     private boolean isPlayerWinMatch(Player player, MatchScore matchScore) {
-        return false; /// ADD IMPLEMENTATION
+        matchScore.assignTheWinner(player);
+        return ((matchScore.getSpecificPlayerScore(player).getSets() - (matchScore.getAnotherPlayerScore(player).getSets()) >= 2));
     }
 }
