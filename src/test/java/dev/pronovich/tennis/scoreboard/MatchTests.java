@@ -53,10 +53,8 @@ public class MatchTests {
 
 
     /// ADD TEST FOR 8-6
-
-
-
     /// ADD TEST FOR ILLEGAL OPTION 9-6
+
     @Test
     @DisplayName("Both players have 6 games")
     void playersHasTie_WhenBothPlayersHasSixGames(){
