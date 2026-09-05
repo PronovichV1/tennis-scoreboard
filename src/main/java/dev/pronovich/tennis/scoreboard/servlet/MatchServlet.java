@@ -43,6 +43,7 @@ public class MatchServlet {
        Match match = Optional.of(ongoingMatches.findById(uuid)).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
        Player player = playerMapper.toPlayerEntity(playerNameDto);
        Match afterCalculation = matchManager.addPointsTo(match, player);
+
        /// create repsonseDto
         /// return repsonseDto
     }
