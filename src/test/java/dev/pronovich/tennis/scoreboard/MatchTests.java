@@ -53,8 +53,10 @@ public class MatchTests {
 
 
     /// ADD TEST FOR 8-6
-    /// ADD TEST FOR ILLEGAL OPTION 9-6
 
+
+
+    /// ADD TEST FOR ILLEGAL OPTION 9-6
     @Test
     @DisplayName("Both players have 6 games")
     void playersHasTie_WhenBothPlayersHasSixGames(){
@@ -75,6 +77,9 @@ public class MatchTests {
         assertEquals(6, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
         assertEquals(6, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
+
+        assertEquals(true, matchScore.isTieBreak());
+
 
     }
 
