@@ -9,9 +9,9 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalException{
 
-    @ExceptionHandler(InvalidFormatException.class)
+    @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleInvalidFormat(InvalidFormatException ex){
+    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException ex){
         Map<String, String> response = new HashMap<>();
         response.put("error", ex.getMessage());
         return response;

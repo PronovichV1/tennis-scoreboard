@@ -1,8 +1,10 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
+import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreDto;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
@@ -38,15 +40,25 @@ public class MatchServlet {
 
 
     @PostMapping("/{uuid}/point")
-    @ResponseStatus
-    public void putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
+    @ResponseStatus(HttpStatus.CREATED)
+    public MatchScoreDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
+        /// CHANGE LATER
        Match match = Optional.of(ongoingMatches.findById(uuid)).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
        Player player = playerMapper.toPlayerEntity(playerNameDto);
        Match afterCalculation = matchManager.addPointsTo(match, player);
-
-       /// create repsonseDto
-        /// return repsonseDto
+       MatchScoreDto response = matchMapper.toCreateMatchScore(afterCalculation);
+       return response;
     }
+
+    @GetMapping("/matches/{uuid}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public MatchScoreDto getMatchScore(@PathVariable UUID uuid){
+        P
+        Match match = Optional.of(ongoingMatches.findById(uuid)).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
+
+
+    }
+
 
 
 
