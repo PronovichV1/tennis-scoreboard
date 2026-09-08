@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class MatchManager {
 
+    /// Add FinishedMatchManager implemnent logic inside add points
+    /// when player win a match triger specific method with DAO and send this match to DB.
+
+
     private OngoingMatches ongoingMatches = new OngoingMatches();
     private MatchEngine matchEngine;
 

@@ -1,7 +1,5 @@
 package dev.pronovich.tennis.scoreboard.service;
 
-import dev.pronovich.tennis.scoreboard.exception.InvalidFormatException;
-import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 
 import java.util.HashMap;

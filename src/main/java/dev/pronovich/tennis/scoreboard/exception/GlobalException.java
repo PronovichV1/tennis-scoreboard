@@ -16,4 +16,12 @@ public class GlobalException{
         response.put("error", ex.getMessage());
         return response;
     }
+
+    @ExceptionHandler(MatchNotExistException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleMatchNotExistException(MatchNotExistException ex){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return response;
+    }
 }
