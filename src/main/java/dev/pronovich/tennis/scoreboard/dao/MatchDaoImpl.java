@@ -26,10 +26,10 @@ public class MatchDaoImpl implements BaseDao<Match>{
     }
 
 
-    public Optional<List<Match>> getAllMatchesFor(String playersName) {
+    public List<Match> getAllMatchesFor(String playersName) {
         /// check the string before put it inside query
         return entityManager.createQuery(
-                "SELECT m FROM mathces m WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
+                "SELECT m FROM Match m WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
                         "OR LOWER(m.player2.name) LIKE LOWER(:name)", Match.class)
                 .setParameter("name", playersName)
                 .getResultList();

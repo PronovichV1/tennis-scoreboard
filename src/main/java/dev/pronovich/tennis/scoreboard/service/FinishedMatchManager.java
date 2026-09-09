@@ -23,9 +23,14 @@ public class FinishedMatchManager {
        return matchAfterDao;
     }
 
+
     public List<Match> getAllMatchesBy(String playersName){
         /// change the comment for exception
-        return matchDao.getAllMatchesFor(playersName).orElseThrow(() -> new DatabaseException("Matches was not founded in DB for this player: " + playersName));
+        List<Match> result = matchDao.getAllMatchesFor(playersName);
+        if (result.isEmpty()){
+            throw new DatabaseException("The Player: " + playersName + "dose not have any matches");
+        }
+        return result;
     }
 
 }
