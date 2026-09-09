@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Entity
+@Table(name = "matches")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Transient
     private UUID uuid;
     @ManyToOne
     @JoinColumn(name="player1")
@@ -27,9 +29,9 @@ public class Match {
     @ManyToOne
     @JoinColumn(name="player2")
     private Player player2;
-    @ManyToOne
     @Transient
     private MatchScore matchScore;
+    @ManyToOne
     @JoinColumn(name="winner")
     private Player winner;
 

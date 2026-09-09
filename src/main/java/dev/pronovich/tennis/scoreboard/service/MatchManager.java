@@ -10,12 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class MatchManager {
 
-    /// Add FinishedMatchManager implemnent logic inside add points
+    /// Add FinishedMatchManager implement logic inside add points
     /// when player win a match triger specific method with DAO and send this match to DB.
 
 
     private OngoingMatches ongoingMatches = new OngoingMatches();
     private MatchEngine matchEngine;
+    private FinishedMatchManager finishedMatchManager;
 
     public MatchManager(MatchEngine matchEngine) {
         this.matchEngine = matchEngine;
@@ -31,9 +32,8 @@ public class MatchManager {
     public Match addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + player.getId() + ") isn't exist." ));
         matchEngine.calculation(player, currentMatch.getMatchScore());
-
-        if (match.getWinner().getName().equals(player.getName())){
-
+        if (match.getWinner().equals(player)){
+            finishedMatchManager.save(match);
         }
         return currentMatch;
     }

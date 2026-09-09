@@ -24,4 +24,13 @@ public class GlobalException{
         response.put("error", ex.getMessage());
         return response;
     }
+
+
+    @ExceptionHandler(DatabaseException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND) /// <- change http status
+    public Map<String, String> handleDatabaseException(DatabaseException ex){
+        Map<String, String> response = new HashMap<>();
+        response.put("error", ex.getMessage());
+        return response;
+    }
 }
