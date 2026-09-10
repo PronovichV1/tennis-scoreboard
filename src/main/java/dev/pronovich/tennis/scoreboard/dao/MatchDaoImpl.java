@@ -1,8 +1,6 @@
 package dev.pronovich.tennis.scoreboard.dao;
 
-import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
@@ -26,12 +24,20 @@ public class MatchDaoImpl implements BaseDao<Match>{
     }
 
 
-    public List<Match> getAllMatchesFor(String playersName) {
-        /// check the string before put it inside query
+    public List<Match> getAllMatchesFor(String playersName, int pageSize, int offset) {
         return entityManager.createQuery(
                 "SELECT m FROM Match m WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
                         "OR LOWER(m.player2.name) LIKE LOWER(:name)", Match.class)
                 .setParameter("name", playersName)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize)
+                .getResultList();
+    }
+
+    public List<Match> getAllMatches(int pageSize, int offset) {
+        return entityManager.createQuery("SELECT m FROM Matches m" , Match.class)
+                .setFirstResult(offset)
+                .setMaxResults(pageSize)
                 .getResultList();
     }
 }

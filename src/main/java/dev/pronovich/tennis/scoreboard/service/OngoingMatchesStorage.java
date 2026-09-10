@@ -9,6 +9,7 @@ public interface OngoingMatchesStorage {
 
      void save(Match match);
      Optional<Match> findById(UUID id);
+     /// delete
      void remove(UUID id);
 
 }
