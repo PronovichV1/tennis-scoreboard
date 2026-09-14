@@ -1,7 +1,6 @@
 package dev.pronovich.tennis.scoreboard.service;
 
-import dev.pronovich.tennis.scoreboard.domain.engene.MatchEngine;
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;

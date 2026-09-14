@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard.domain.engene;
+package dev.pronovich.tennis.scoreboard.domain.engine;
 
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.model.Player;

@@ -1,5 +1,7 @@
 package dev.pronovich.tennis.scoreboard.dto.response;
 
 
-public record CreatedMatchDto(String id) {
+import java.util.UUID;
+
+public record CreatedMatchDto(UUID id) {
 }

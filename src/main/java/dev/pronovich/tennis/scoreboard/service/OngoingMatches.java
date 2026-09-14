@@ -1,11 +1,12 @@
 package dev.pronovich.tennis.scoreboard.service;
 
 import dev.pronovich.tennis.scoreboard.model.Match;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
-
+@Service
 public class OngoingMatches implements OngoingMatchesStorage{
 
     private HashMap<UUID, Match> matchesMap = new HashMap<>();

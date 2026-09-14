@@ -2,7 +2,7 @@ package dev.pronovich.tennis.scoreboard;
 
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.domain.engene.TieBreakEngine;
+import dev.pronovich.tennis.scoreboard.domain.engine.TieBreakEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;

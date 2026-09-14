@@ -27,7 +27,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/matches")
-public class MatchServlet {
+public class MatchServlet { /// change name to MatchController
 
     private MatchManager matchManager;
     private OngoingMatches ongoingMatches;
@@ -55,7 +55,7 @@ public class MatchServlet {
        return response;
     }
 
-    @GetMapping("/matches/{uuid}")
+    @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.CREATED) /// check status
     public MatchScoreDto getMatchScore(@PathVariable UUID uuid){
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
@@ -70,13 +70,15 @@ public class MatchServlet {
     public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
         String firstPlayer = generatedMatch.firstPlayerName();
         String secondPlayer = generatedMatch.secondPlayerName();
+        System.out.println(firstPlayer);
+        System.out.println(secondPlayer);
         Match match = matchManager.generateMatch(firstPlayer, secondPlayer);
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(match);
         System.out.println(createdMatchDto.id());
         return createdMatchDto;
     }
 
-    @GetMapping("/matches")
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PlayerMatchesResponseDto getAllMatches(@RequestParam (name = "page", required = false, defaultValue = "0") int page,
                                                   @RequestParam (name = "player_name", required = false) String playerName){
