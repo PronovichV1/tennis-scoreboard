@@ -1,12 +1,12 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerMatchesRequestDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.request.MatchUuidDto;
 import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
-import dev.pronovich.tennis.scoreboard.dto.response.MatchResponseDto;
-import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreDto;
+import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
@@ -46,35 +46,32 @@ public class MatchServlet { /// change name to MatchController
 
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.CREATED) /// check status
-    public MatchScoreDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
+    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
         /// add dto for response
        Match match = Optional.of(ongoingMatches.findById(uuid)).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
        Player player = playerMapper.toPlayerEntity(playerNameDto);
        Match afterCalculation = matchManager.addPointsTo(match, player);
-       MatchScoreDto response = matchMapper.toCreateMatchScore(afterCalculation);
+       MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
        return response;
     }
 
     @GetMapping("/{uuid}")
-    @ResponseStatus(HttpStatus.CREATED) /// check status
-    public MatchScoreDto getMatchScore(@PathVariable UUID uuid){
+    @ResponseStatus(HttpStatus.OK)
+    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
-        Match match = Optional.of(ongoingMatches.findById(matchUuidDto.uuid())).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
-        MatchScoreDto response = matchMapper.toCreateMatchScore(match);
+        Match match = ongoingMatches.findById(matchUuidDto.uuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist."));
+        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(match);
         return response;
     }
 
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) /// check status
+    @ResponseStatus(HttpStatus.CREATED)
     public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
         String firstPlayer = generatedMatch.firstPlayerName();
         String secondPlayer = generatedMatch.secondPlayerName();
-        System.out.println(firstPlayer);
-        System.out.println(secondPlayer);
         Match match = matchManager.generateMatch(firstPlayer, secondPlayer);
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(match);
-        System.out.println(createdMatchDto.id());
         return createdMatchDto;
     }
 
