@@ -17,6 +17,21 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Match {
+
+
+    /// test method
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id=" + id +
+                ", uuid=" + uuid +
+                ", player1=" + player1 +
+                ", player2=" + player2 +
+                ", matchScore=" + matchScore +
+                ", winner=" + winner +
+                '}';
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

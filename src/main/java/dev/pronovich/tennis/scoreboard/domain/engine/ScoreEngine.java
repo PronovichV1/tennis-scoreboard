@@ -17,6 +17,7 @@ public class ScoreEngine implements Engine {
     public void calculation(Player player, MatchScore matchScore) {
 
         gameIsWonByConcretePlayer = false;
+
        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
@@ -42,9 +43,7 @@ public class ScoreEngine implements Engine {
             rivalPlayerScore.setPoints(Points.FORTY);
             return;
         }
-
         concretePlayerScore.addPoints();
-
     }
 
     protected boolean isGameWon() {

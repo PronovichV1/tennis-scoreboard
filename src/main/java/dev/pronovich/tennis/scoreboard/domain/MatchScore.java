@@ -5,6 +5,10 @@ import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Locale;
+import java.util.Optional;
+import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -23,7 +27,7 @@ public class MatchScore {
 
 
     public PlayerScore getSpecificPlayerScore(Player player) {
-        if (playerScore1.getPlayer().getName().equals(player.getName())){
+        if (playerScore1.getPlayer().equals(player)){
             return playerScore1;
         } else {
             return playerScore2;
@@ -31,7 +35,7 @@ public class MatchScore {
     }
 
     public PlayerScore getAnotherPlayerScore(Player player) {
-        if (playerScore1.getPlayer().getName().equals(player.getName())) {
+        if (playerScore1.getPlayer().equals(player)) {
             return playerScore2;
         } else {
             return playerScore1;
@@ -47,5 +51,15 @@ public class MatchScore {
         winnerName = player.getName();
     }
 
-    
+
+    public Optional<UUID> getUuidBy(String name) {
+        String polishedName = name.toLowerCase(Locale.ROOT).trim();
+        if (playerScore1.getPlayer().getName().equals(name)){
+            return Optional.of(playerScore1.getPlayer().getUuid());
+        }
+        if (playerScore2.getPlayer().getName().equals(name)){
+            return Optional.of(playerScore2.getPlayer().getUuid());
+        }
+        return Optional.empty();
+    }
 }

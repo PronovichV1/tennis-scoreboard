@@ -29,11 +29,13 @@ public class MatchManager {
     }
 
     public Match addPointsTo(Match match, Player player) {
+
         Match currentMatch = ongoingMatches.findById(match.getUuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + player.getId() + ") isn't exist." ));
         matchEngine.calculation(player, currentMatch.getMatchScore());
-        if (match.getWinner().equals(player)){
+        if (match.getWinner() != null){
             finishedMatchManager.save(match);
         }
+
         return currentMatch;
     }
 }

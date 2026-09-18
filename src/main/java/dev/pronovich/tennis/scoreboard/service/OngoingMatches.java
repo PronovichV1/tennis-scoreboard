@@ -3,10 +3,8 @@ package dev.pronovich.tennis.scoreboard.service;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 @Service
 public class OngoingMatches implements OngoingMatchesStorage{
 
@@ -24,5 +22,10 @@ public class OngoingMatches implements OngoingMatchesStorage{
 
     @Override
     public void remove(UUID id) {
+    }
+
+    /// test method
+    public void showAll(){
+        matchesMap.forEach((uuid,m) -> System.out.println(m.toString()));
     }
 }

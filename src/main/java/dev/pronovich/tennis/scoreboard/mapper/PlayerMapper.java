@@ -8,6 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface PlayerMapper {
 
-
+    @Mapping(source = "name", target = "name")
     Player toPlayerEntity(PlayerNameDto playerNameDto);
 }

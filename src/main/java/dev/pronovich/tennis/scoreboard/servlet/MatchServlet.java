@@ -1,6 +1,5 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerMatchesRequestDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
@@ -9,6 +8,7 @@ import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
+import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
@@ -47,9 +47,10 @@ public class MatchServlet { /// change name to MatchController
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.CREATED) /// check status
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
-        /// add dto for response
-       Match match = Optional.of(ongoingMatches.findById(uuid)).get().orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
-       Player player = playerMapper.toPlayerEntity(playerNameDto);
+        Match match = Optional.of(ongoingMatches.findById(uuid)).get()
+                .orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
+        Player player = playerMapper.toPlayerEntity(playerNameDto);
+        player.setUuid(match.getMatchScore().getUuidBy(player.getName()).orElseThrow(() -> new PlayerNotExist("Player with this uuid is not exist")));
        Match afterCalculation = matchManager.addPointsTo(match, player);
        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
        return response;

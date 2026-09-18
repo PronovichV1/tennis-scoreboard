@@ -18,11 +18,11 @@ public class MatchEngine implements Engine {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
-
         if (tieBreak.isOn()) {
-            tieBreak.calculation(player, matchScore);
+            tieBreak.calculation(concretePlayerScore.getPlayer(), matchScore);
         } else {
-            scoreEngine.calculation(player, matchScore);
+            scoreEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+
         }
         
         if (!scoreEngine.isGameWon() || (tieBreak.isOn() && !tieBreak.isTieBreakWon())){
