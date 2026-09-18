@@ -45,7 +45,7 @@ public class MatchServlet { /// change name to MatchController
 
 
     @PostMapping("/{uuid}/point")
-    @ResponseStatus(HttpStatus.CREATED) /// check status
+    @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
         Match match = Optional.of(ongoingMatches.findById(uuid)).get()
                 .orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
