@@ -44,7 +44,7 @@ public class MatchEngine implements Engine {
 
 
             if (isPlayerWinMatch(player, matchScore)) { /// WINNER
-                matchScore.assignTheWinner(player);
+                matchScore.assignTheWinner(concretePlayerScore.getPlayer());
             }
         }
 
@@ -61,8 +61,7 @@ public class MatchEngine implements Engine {
 
     /// best of 3
     /// Win a whole game
-    private boolean isPlayerWinMatch(Player player, MatchScore matchScore) {
-        matchScore.assignTheWinner(player);
+    public boolean isPlayerWinMatch(Player player, MatchScore matchScore) {
         return ((matchScore.getSpecificPlayerScore(player).getSets() - (matchScore.getAnotherPlayerScore(player).getSets()) >= 2));
     }
 }
