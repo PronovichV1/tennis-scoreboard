@@ -45,6 +45,7 @@ public class MatchEngine implements Engine {
 
             if (isPlayerWinMatch(player, matchScore)) { /// WINNER
                 matchScore.assignTheWinner(concretePlayerScore.getPlayer());
+
             }
         }
 

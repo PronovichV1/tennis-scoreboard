@@ -25,6 +25,17 @@ public class MatchDaoImpl implements BaseDao<Match>{
     public Optional<Match> save(Match match) {
        try (Session session = sessionFactory.openSession()){
            Transaction tx = session.beginTransaction();
+           session.persist(match.getPlayer1());
+           session.persist(match.getPlayer2());
+           System.out.println("player1 ID = " + match.getPlayer1().getId());
+           System.out.println("player2 ID = " + match.getPlayer2().getId());
+           System.out.println("winner ID = " + match.getWinner().getId());
+
+           System.out.println("player1 == winner: " +
+                   (match.getPlayer1() == match.getWinner()));
+
+           System.out.println("player2 == winner: " +
+                   (match.getPlayer2() == match.getWinner()));
            Match savedMatch = session.merge(match);
            tx.commit();
            return Optional.of(savedMatch);
@@ -53,7 +64,7 @@ public class MatchDaoImpl implements BaseDao<Match>{
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
 
-            List<Match> matchList = session.createQuery("SELECT m FROM Matches m", Match.class)
+            List<Match> matchList = session.createQuery("SELECT m FROM Match m", Match.class)
                     .setFirstResult(offset)
                     .setMaxResults(pageSize)
                     .getResultList();

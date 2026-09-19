@@ -142,7 +142,7 @@ public class MatchTests {
 
         matchEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(matchScore.getWinnerName(), concretePlayer.getName());
+        assertEquals(matchScore.getWinner().getName(), concretePlayer.getName());
 
 
     }

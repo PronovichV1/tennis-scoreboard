@@ -17,12 +17,12 @@ public class MatchScore {
 
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
-    private String winnerName;
+    private Player winner;
 
     public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
         this.playerScore1 = playerScore1;
         this.playerScore2 = playerScore2;
-        winnerName = null;
+        winner = null;
     }
 
 
@@ -48,7 +48,7 @@ public class MatchScore {
     }
 
     public void assignTheWinner(Player player){
-        winnerName = player.getName();
+        winner = player;
     }
 
 

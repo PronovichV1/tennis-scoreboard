@@ -34,12 +34,10 @@ public class MatchManager {
         Match currentMatch = ongoingMatches.findById(match.getUuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + player.getId() + ") isn't exist." ));
         matchEngine.calculation(player, currentMatch.getMatchScore());
 
-        if (currentMatch.getMatchScore().getWinnerName() != null
-                && currentMatch.getMatchScore().getWinnerName().equals(player.getName())){
-            match.setWinner(player);
+        if (currentMatch.getMatchScore().getWinner() != null) {
+            currentMatch.setWinner(currentMatch.getMatchScore().getWinner());
             finishedMatchManager.save(match);
         }
-
         return currentMatch;
     }
 }

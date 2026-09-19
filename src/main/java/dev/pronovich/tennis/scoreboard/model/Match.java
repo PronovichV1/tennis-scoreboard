@@ -25,7 +25,6 @@ public class Match {
     @ManyToOne
     @JoinColumn(name="player1")
     private Player player1;
-
     @ManyToOne
     @JoinColumn(name="player2")
     private Player player2;
@@ -41,8 +40,4 @@ public class Match {
         this.player2 = player2;
         matchScore = new MatchScore(new PlayerScore(player1), new PlayerScore(player2));
     }
-
-
-
-
 }
