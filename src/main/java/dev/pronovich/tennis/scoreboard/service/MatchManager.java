@@ -5,22 +5,22 @@ import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MatchManager {
 
-    /// Add FinishedMatchManager implement logic inside add points
-    /// when player win a match triger specific method with DAO and send this match to DB.
 
     private OngoingMatches ongoingMatches;
     private MatchEngine matchEngine;
     private FinishedMatchManager finishedMatchManager;
 
-    public MatchManager(MatchEngine matchEngine) {
+    @Autowired
+    public MatchManager(MatchEngine matchEngine, FinishedMatchManager finishedMatchManager) {
         this.ongoingMatches = new OngoingMatches();
         this.matchEngine = matchEngine;
-        this.finishedMatchManager = new FinishedMatchManager(new MatchDaoImpl());
+        this.finishedMatchManager = finishedMatchManager;
     }
 
 

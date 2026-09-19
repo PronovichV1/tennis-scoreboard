@@ -16,7 +16,7 @@ public class Player {
     private int id;
     @Column(name="name")
     private String name;
-
+    @Transient
     private UUID uuid;
 
     public Player(String name) {

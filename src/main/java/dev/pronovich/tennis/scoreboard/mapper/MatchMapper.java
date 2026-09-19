@@ -24,8 +24,8 @@ public interface MatchMapper {
     @Mapping(source = "player.name", target = "name")
     PlayerScoreResponseDto toPlayerScoreDto(PlayerScore playerScore);
 
-    @Mapping(source = "matchScore.playerScore1", target = "firstPlayerScoreResponseDto")
-    @Mapping(source = "matchScore.playerScore2", target = "secondPlayerScoreResponseDto")
+    @Mapping(source = "matchScore.playerScore1", target = "firstPlayer")
+    @Mapping(source = "matchScore.playerScore2", target = "secondPlayer")
     @Mapping(source = "winner.name", target = "winnerName")
     MatchScoreResponseDto toCreateMatchScore(Match match);
 

@@ -17,7 +17,7 @@ public class DatabaseConfig {
         HikariConfig hikariConfig = new HikariConfig();
 
         hikariConfig.setDriverClassName("org.postgresql.Driver");
-        hikariConfig.setJdbcUrl("jdbc:postgressql://localhost:5432/tennis_score_board");
+        hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/tennis_score_board");
         hikariConfig.setUsername("postgres");
         hikariConfig.setPassword("1234");
 
@@ -32,7 +32,7 @@ public class DatabaseConfig {
         sessionFactory.setPackagesToScan("dev/pronovich/tennis/scoreboard/model");
 
         Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialec");
+        hibernateProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", "update");
         hibernateProperties.setProperty("hibernate.show_sql", "true");
 

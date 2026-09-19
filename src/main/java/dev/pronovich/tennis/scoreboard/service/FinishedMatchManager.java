@@ -4,16 +4,15 @@ import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
+@Component
 public class FinishedMatchManager {
 
     private final MatchDaoImpl matchDao;
-
-
     public FinishedMatchManager(MatchDaoImpl matchDao) {
         this.matchDao = matchDao;
     }

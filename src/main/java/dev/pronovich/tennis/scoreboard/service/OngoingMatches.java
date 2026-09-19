@@ -22,10 +22,7 @@ public class OngoingMatches implements OngoingMatchesStorage{
 
     @Override
     public void remove(UUID id) {
+        /// remove match after On player win a game
     }
 
-    /// test method
-    public void showAll(){
-        matchesMap.forEach((uuid,m) -> System.out.println(m.toString()));
-    }
 }
