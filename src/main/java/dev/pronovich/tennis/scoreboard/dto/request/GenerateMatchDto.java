@@ -1,8 +1,5 @@
 package dev.pronovich.tennis.scoreboard.dto.request;
 
-
-import dev.pronovich.tennis.scoreboard.exception.InvalidFormatException;
-
 public record GenerateMatchDto(String firstPlayerName, String secondPlayerName) {
 
     public GenerateMatchDto(String firstPlayerName, String secondPlayerName) {
@@ -15,8 +12,4 @@ public record GenerateMatchDto(String firstPlayerName, String secondPlayerName) 
         }
         this.secondPlayerName = secondPlayerName;
     }
-
-
-
-
 }

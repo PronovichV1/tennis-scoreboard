@@ -10,10 +10,10 @@ import java.util.Map;
 public class GlobalException{
 
     @ExceptionHandler(IllegalArgumentException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleIllegalArgumentException(IllegalArgumentException ex){
         Map<String, String> response = new HashMap<>();
-        response.put("error", ex.getMessage()); /// <- change error status
+        response.put("message", ex.getMessage());
         return response;
     }
 
@@ -21,7 +21,7 @@ public class GlobalException{
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleMatchNotExistException(MatchNotExistException ex){
         Map<String, String> response = new HashMap<>();
-        response.put("error", ex.getMessage());  /// <- change error status
+        response.put("message", ex.getMessage());
         return response;
     }
 
@@ -30,7 +30,7 @@ public class GlobalException{
     @ResponseStatus(HttpStatus.NOT_FOUND) /// <- change http status
     public Map<String, String> handleDatabaseException(DatabaseException ex){
         Map<String, String> response = new HashMap<>();
-        response.put("error", ex.getMessage()); /// <- change error status
+        response.put("message", ex.getMessage()); /// <- change error status
         return response;
     }
 }
