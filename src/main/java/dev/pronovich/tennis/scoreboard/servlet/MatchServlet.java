@@ -1,9 +1,11 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
+import dev.pronovich.tennis.scoreboard.domain.MatchesPage;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.request.MatchUuidDto;
 import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
+import dev.pronovich.tennis.scoreboard.dto.response.FinishedMatchResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
@@ -79,20 +81,21 @@ public class MatchServlet { /// change name to MatchController
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PlayerMatchesResponseDto getAllMatches(@RequestParam (name = "page", required = false, defaultValue = "0") int page,
+    public PlayerMatchesResponseDto getAllMatches(@RequestParam (name = "page", required = false, defaultValue = "1") int page,
                                                   @RequestParam (name = "player_name", required = false) String playerName){
-        List<Match> matchList;
+
+        MatchesPage matchesPage = null;
         if (playerName == null || playerName.isBlank()){
-            matchList = finishedMatchManager.getAllMatches(page);
+            matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
-            matchList = finishedMatchManager.getAllMatchesBy(page, playerName);
+          ///  matchList = finishedMatchManager.getAllMatchesBy(page, playerName);
         }
-
-        int totalPages = (matchList.size() + MatchUtils.DEFAULT_PAGE_SIZE - 1) / MatchUtils.DEFAULT_PAGE_SIZE ;
-        PlayerMatchesResponseDto playerMatchesResponseDto = new PlayerMatchesResponseDto(
-                matchMapper.toMatchResponseDto(matchList), page, totalPages);
-
-        return playerMatchesResponseDto;
+        List<FinishedMatchResponseDto> matches = matchMapper.toMatchResponseDtoList(matchesPage.matchList());
+        return new PlayerMatchesResponseDto(
+                matches,
+                matchesPage.currentPage(),
+                matchesPage.totalMatches()
+        );
     }
 
 }

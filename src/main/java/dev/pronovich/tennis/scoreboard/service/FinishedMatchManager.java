@@ -1,5 +1,6 @@
 package dev.pronovich.tennis.scoreboard.service;
 import dev.pronovich.tennis.scoreboard.dao.MatchDaoImpl;
+import dev.pronovich.tennis.scoreboard.domain.MatchesPage;
 import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
@@ -7,7 +8,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class FinishedMatchManager {
@@ -29,6 +33,7 @@ public class FinishedMatchManager {
         /// change the comment for exception
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
         int offset = page * pageSize;
+
         List<Match> result = matchDao.getAllMatchesFor(playersName, pageSize, offset);
         if (result.isEmpty()){
             throw new DatabaseException("The Player: " + playersName + "dose not have any matches");
@@ -36,13 +41,22 @@ public class FinishedMatchManager {
         return result;
     }
 
-    public List<Match> getAllMatches(Integer page) {
+    public MatchesPage getAllMatches(Integer page) {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int offset = page * pageSize;
-        List<Match> result = matchDao.getAllMatches(pageSize, offset);
-        if (result.isEmpty()){
+        int fromIndex = (page - 1) * pageSize;
+        List<Match> allMatches = matchDao.getAllMatches();
+        int totalMatches = allMatches.size();
+        if (allMatches.isEmpty()){
             throw new DatabaseException("Database doesn't have any match yet.");
         }
-        return result;
+        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
+        int totalPages = (totalMatches + pageSize - 1) / pageSize;
+        List<Match> matches = allMatches.subList(fromIndex, toIndex);
+        return new MatchesPage(
+                page,
+                totalPages,
+                matches
+        );
+
     }
 }

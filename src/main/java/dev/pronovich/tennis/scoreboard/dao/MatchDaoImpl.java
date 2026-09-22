@@ -51,13 +51,11 @@ public class MatchDaoImpl implements BaseDao<Match>{
         }
     }
 
-    public List<Match> getAllMatches(int pageSize, int offset) {
+    public List<Match> getAllMatches() {
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
 
             List<Match> matchList = session.createQuery("SELECT m FROM Match m", Match.class)
-                    .setFirstResult(offset)
-                    .setMaxResults(pageSize)
                     .getResultList();
 
             tx.commit();
