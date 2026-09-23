@@ -34,7 +34,7 @@ public class MatchDaoImpl implements BaseDao<Match>{
     }
 
 
-    public List<Match> getAllMatchesFor(String playersName, int pageSize, int offset) {
+    public List<Match> getAllMatchesFor(String playersName, int pageSize, int fromIndex) {
         try (Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
 
@@ -42,7 +42,7 @@ public class MatchDaoImpl implements BaseDao<Match>{
                     "SELECT m FROM Match m WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
                             "OR LOWER(m.player2.name) LIKE LOWER(:name)", Match.class)
                     .setParameter("name", playersName)
-                    .setFirstResult(offset)
+                    .setFirstResult(fromIndex)
                     .setMaxResults(pageSize)
                     .getResultList();
 

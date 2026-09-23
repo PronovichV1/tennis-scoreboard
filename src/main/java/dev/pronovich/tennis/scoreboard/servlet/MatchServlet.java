@@ -88,7 +88,7 @@ public class MatchServlet { /// change name to MatchController
         if (playerName == null || playerName.isBlank()){
             matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
-          ///  matchList = finishedMatchManager.getAllMatchesBy(page, playerName);
+            matchesPage = finishedMatchManager.getAllMatchesBy(page, playerName);
         }
         List<FinishedMatchResponseDto> matches = matchMapper.toMatchResponseDtoList(matchesPage.matchList());
         return new PlayerMatchesResponseDto(

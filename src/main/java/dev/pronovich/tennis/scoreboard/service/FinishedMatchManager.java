@@ -29,16 +29,22 @@ public class FinishedMatchManager {
     }
 
 
-    public List<Match> getAllMatchesBy(Integer page, String playersName){
-        /// change the comment for exception
+    public MatchesPage getAllMatchesBy(Integer page, String playersName){
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int offset = page * pageSize;
-
-        List<Match> result = matchDao.getAllMatchesFor(playersName, pageSize, offset);
-        if (result.isEmpty()){
-            throw new DatabaseException("The Player: " + playersName + "dose not have any matches");
+        int fromIndex = (page - 1) * pageSize;
+        List<Match> allMatches = matchDao.getAllMatchesFor(playersName, pageSize, fromIndex);
+        if (allMatches.isEmpty()){
+            throw new DatabaseException("The Player " + playersName  + " doesn't have any match yet");
         }
-        return result;
+        int totalMatches = allMatches.size();
+        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
+        int totalPages = (totalMatches + pageSize - 1) / pageSize;
+        List<Match> matches = allMatches.subList(fromIndex, toIndex);
+        return new MatchesPage(
+                page,
+                totalPages,
+                matches
+        );
     }
 
     public MatchesPage getAllMatches(Integer page) {
