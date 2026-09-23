@@ -29,7 +29,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/matches")
-public class MatchServlet { /// change name to MatchController
+public class MatchServlet {
 
     private MatchManager matchManager;
     private OngoingMatches ongoingMatches;
@@ -51,8 +51,7 @@ public class MatchServlet { /// change name to MatchController
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
-        Match match = Optional.of(ongoingMatches.findById(uuid)).get()
-                .orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist." ));
+        Match match = ongoingMatches.findById(uuid);/// remove Optional from here
         Player player = playerMapper.toPlayerEntity(playerNameDto);
         player.setUuid(match.getMatchScore().getUuidBy(player.getName()).orElseThrow(() -> new PlayerNotExist("Player with this uuid is not exist")));
        Match afterCalculation = matchManager.addPointsTo(match, player);
@@ -64,7 +63,7 @@ public class MatchServlet { /// change name to MatchController
     @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
-        Match match = ongoingMatches.findById(matchUuidDto.uuid()).orElseThrow(() -> new MatchNotExistException("Match with that id: (" + uuid + ") isn't exist."));
+        Match match = ongoingMatches.findById(matchUuidDto.uuid());
         MatchScoreResponseDto response = matchMapper.toCreateMatchScore(match);
         return response;
     }

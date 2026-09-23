@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface OngoingMatchesStorage {
 
      void save(Match match);
-     Optional<Match> findById(UUID id);
+     Match findById(UUID id);
      /// delete
      void remove(UUID id);
 
