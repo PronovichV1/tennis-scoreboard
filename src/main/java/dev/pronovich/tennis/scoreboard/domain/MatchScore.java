@@ -1,6 +1,7 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
 
+import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,14 +53,16 @@ public class MatchScore {
     }
 
 
-    public Optional<UUID> getUuidBy(String name) {
+    public UUID getUuidBy(String name) {
         String polishedName = name.toLowerCase(Locale.ROOT).trim();
-        if (playerScore1.getPlayer().getName().equals(name)){
-            return Optional.of(playerScore1.getPlayer().getUuid());
+        String firstPlayerName = playerScore1.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
+        String secondPlayerName = playerScore2.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
+        if (firstPlayerName.equals(polishedName)){
+            return playerScore1.getPlayer().getUuid();
         }
-        if (playerScore2.getPlayer().getName().equals(name)){
-            return Optional.of(playerScore2.getPlayer().getUuid());
+        if (secondPlayerName.equals(polishedName)){
+            return playerScore2.getPlayer().getUuid();
         }
-        return Optional.empty();
+        throw  new PlayerNotExist("Player with this uuid is not exist");
     }
 }

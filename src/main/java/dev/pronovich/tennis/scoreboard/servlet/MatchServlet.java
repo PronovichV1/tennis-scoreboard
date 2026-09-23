@@ -51,9 +51,9 @@ public class MatchServlet {
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
-        Match match = ongoingMatches.findById(uuid);/// remove Optional from here
+        Match match = ongoingMatches.findById(uuid);
         Player player = playerMapper.toPlayerEntity(playerNameDto);
-        player.setUuid(match.getMatchScore().getUuidBy(player.getName()).orElseThrow(() -> new PlayerNotExist("Player with this uuid is not exist")));
+        player.setUuid(match.getMatchScore().getUuidBy(player.getName()));
        Match afterCalculation = matchManager.addPointsTo(match, player);
        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
        return response;
