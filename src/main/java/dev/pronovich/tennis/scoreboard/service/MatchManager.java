@@ -37,6 +37,7 @@ public class MatchManager {
         if (currentMatch.getMatchScore().getWinner() != null) {
             currentMatch.setWinner(currentMatch.getMatchScore().getWinner());
             finishedMatchManager.save(match);
+            ongoingMatches.remove(match.getUuid());
         }
         return currentMatch;
     }

@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard.domain;
+package dev.pronovich.tennis.scoreboard.dto;
 
 import dev.pronovich.tennis.scoreboard.model.Match;
 

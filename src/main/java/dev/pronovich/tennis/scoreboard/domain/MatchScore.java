@@ -28,6 +28,7 @@ public class MatchScore {
 
 
     public PlayerScore getSpecificPlayerScore(Player player) {
+        /// if someone pass
         if (playerScore1.getPlayer().equals(player)){
             return playerScore1;
         } else {

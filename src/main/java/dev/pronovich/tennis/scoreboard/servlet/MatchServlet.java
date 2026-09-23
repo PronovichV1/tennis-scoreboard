@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
-import dev.pronovich.tennis.scoreboard.domain.MatchesPage;
+import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.request.MatchUuidDto;
@@ -8,8 +8,6 @@ import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.response.FinishedMatchResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
-import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
-import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
@@ -17,13 +15,11 @@ import dev.pronovich.tennis.scoreboard.model.Player;
 import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.FinishedMatchManager;
 import dev.pronovich.tennis.scoreboard.service.OngoingMatches;
-import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
 import dev.pronovich.tennis.scoreboard.validator.Validator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -51,8 +47,9 @@ public class MatchServlet {
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
-        Match match = ongoingMatches.findById(uuid);
+        /// add validator for uuid
         Player player = playerMapper.toPlayerEntity(playerNameDto);
+        Match match = ongoingMatches.findById(uuid);
         player.setUuid(match.getMatchScore().getUuidBy(player.getName()));
        Match afterCalculation = matchManager.addPointsTo(match, player);
        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);

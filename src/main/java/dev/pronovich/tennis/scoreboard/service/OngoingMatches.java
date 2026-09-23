@@ -29,7 +29,12 @@ public class OngoingMatches implements OngoingMatchesStorage{
 
     @Override
     public void remove(UUID id) {
-        /// remove match after On player win a game
+        if (matchesMap.get(id) == null){
+            throw new MatchNotExistException(
+                    "Match with that id: (" + id.toString() + ") isn't exist."
+            );
+        }
+        matchesMap.remove(id);
     }
 
 }

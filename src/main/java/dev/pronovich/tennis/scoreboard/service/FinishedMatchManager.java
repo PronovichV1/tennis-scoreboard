@@ -1,17 +1,13 @@
 package dev.pronovich.tennis.scoreboard.service;
 import dev.pronovich.tennis.scoreboard.dao.MatchDaoImpl;
-import dev.pronovich.tennis.scoreboard.domain.MatchesPage;
+import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class FinishedMatchManager {
@@ -23,7 +19,6 @@ public class FinishedMatchManager {
 
     @Transactional
     public Match save(Match match) {
-        /// change the comment for exception
         Match matchAfterDao = matchDao.save(match).orElseThrow(() -> new DatabaseException("Match didn't saved by Database"));
        return matchAfterDao;
     }
