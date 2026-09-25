@@ -7,7 +7,7 @@ import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import org.springframework.stereotype.Service;
 
-@Service
+
 @Getter
 public class ScoreEngine implements Engine {
 

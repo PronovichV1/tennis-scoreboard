@@ -5,7 +5,7 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class TieBreakEngine implements Engine {
 
 

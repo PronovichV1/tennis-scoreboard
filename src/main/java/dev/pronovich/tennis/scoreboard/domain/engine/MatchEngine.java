@@ -5,11 +5,17 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public class MatchEngine implements Engine {
 
-    private final ScoreEngine scoreEngine = new ScoreEngine();
-    private final TieBreakEngine tieBreak = new TieBreakEngine();
+    private final ScoreEngine scoreEngine;
+    private final TieBreakEngine tieBreak ;
+
+    public MatchEngine(){
+        this.scoreEngine = new ScoreEngine();
+        this.tieBreak = new TieBreakEngine();
+
+    }
 
 
     @Override
@@ -24,7 +30,8 @@ public class MatchEngine implements Engine {
             scoreEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
 
         }
-        
+
+        /// bad ddd design
         if (!scoreEngine.isGameWon() || (tieBreak.isOn() && !tieBreak.isTieBreakWon())){
             return;
         }
@@ -32,6 +39,7 @@ public class MatchEngine implements Engine {
             concretePlayerScore.addGamesScore(); /// add points
 
             if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
+                /// match need to activate tie brak not an engine #1
                 tieBreak.activateTieBreak(matchScore);
                 return;
             }
