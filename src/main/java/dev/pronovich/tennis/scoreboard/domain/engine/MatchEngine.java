@@ -3,8 +3,6 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
-import org.springframework.stereotype.Service;
-
 
 public class MatchEngine implements Engine {
 
@@ -24,45 +22,43 @@ public class MatchEngine implements Engine {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
-        if (tieBreak.isOn()) {
+        if (matchScore.isTieBreak()) {
             tieBreak.calculation(concretePlayerScore.getPlayer(), matchScore);
         } else {
             scoreEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
-
         }
 
-        /// bad ddd design
-        if (!scoreEngine.isGameWon() || (tieBreak.isOn() && !tieBreak.isTieBreakWon())){
+        /// bad ddd design if  !matchScore().gameIsWon() || (matchScore.isOn && !matchScore.isTieBreakIsWon())
+        if (!matchScore.isGameWon() || (matchScore.isTieBreak() && !matchScore.isTieBreakWon())){
             return;
         }
 
             concretePlayerScore.addGamesScore(); /// add points
 
             if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
-                /// match need to activate tie brak not an engine #1
-                tieBreak.activateTieBreak(matchScore);
+                matchScore.activateTieBreak();
                 return;
             }
 
-            if (isPlayerWinSet(concretePlayerScore, rivalPlayerScore)){ /// win set
+            if (isPlayerWinSet(matchScore, concretePlayerScore)){ /// win set
                 concretePlayerScore.addSetsScore();
                 concretePlayerScore.resetGames();
                 rivalPlayerScore.resetGames();
+                matchScore.setTieBreakWon(false);
             }
 
 
             if (isPlayerWinMatch(player, matchScore)) { /// WINNER
                 matchScore.assignTheWinner(concretePlayerScore.getPlayer());
-
             }
         }
 
     /// base win
-    private boolean isPlayerWinSet(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5){
+    private boolean isPlayerWinSet(MatchScore matchScore, PlayerScore concretePLayerScore) {
+        if (concretePLayerScore.getGames() == 6 && matchScore.getAnotherPlayerScore(concretePLayerScore.getPlayer()).getGames() < 5){
             return true;
         }
-        if (tieBreak.isTieBreakWon()){
+        if (matchScore.isTieBreakWon()){
             return true;
         }
         return false;

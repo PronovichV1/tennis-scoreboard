@@ -11,12 +11,10 @@ import org.springframework.stereotype.Service;
 @Getter
 public class ScoreEngine implements Engine {
 
-    private boolean gameIsWonByConcretePlayer;
 
     @Override
     public void calculation(Player player, MatchScore matchScore) {
-
-        gameIsWonByConcretePlayer = false;
+        matchScore.setGameWon(false);
 
        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
@@ -24,14 +22,14 @@ public class ScoreEngine implements Engine {
         /// 40 / 30,15,0 -> winGame
         if (concretePlayerScore.getPoints() == Points.FORTY &&
                 (rivalPlayerScore.getPoints().compareTo(Points.FORTY) < 0)){
-            gameIsWonByConcretePlayer = true;
+            matchScore.setGameWon(true);
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
             return;
         }
         /// AD / 40  -> winGame
         if (concretePlayerScore.getPoints() == Points.ADVANTAGE &&
         rivalPlayerScore.getPoints() == Points.FORTY){
-            gameIsWonByConcretePlayer = true;
+            matchScore.setGameWon(true);
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
             return;
         }
@@ -43,10 +41,6 @@ public class ScoreEngine implements Engine {
             return;
         }
         concretePlayerScore.addPoints();
-    }
-
-    protected boolean isGameWon() {
-        return gameIsWonByConcretePlayer;
     }
 
     private void resetPointsOfBothPlayers(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {

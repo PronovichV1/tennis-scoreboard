@@ -43,7 +43,7 @@ public class ScoreTests {
         ///Assert
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, scoreEngine.isGameIsWonByConcretePlayer());
+        assertEquals(true, matchScore.isGameWon());
     }
 
     @Test
@@ -86,7 +86,7 @@ public class ScoreTests {
 
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, scoreEngine.isGameIsWonByConcretePlayer());
+        assertEquals(true, matchScore.isGameWon());
     }
 
 

@@ -63,7 +63,7 @@ public class TieBreakTest {
 
         tieBreakEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(true, tieBreakEngine.isTieBreakWon());
+        assertEquals(true, matchScore.isTieBreakWon());
     }
 
     /// concretePTBP = 8 - rivalPTBP = 8  concretePWinTB tie
@@ -76,7 +76,7 @@ public class TieBreakTest {
         tieBreakEngine.calculation(concretePlayer, matchScore);
         assertEquals(8, matchScore.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
         assertEquals(8, matchScore.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
-        assertEquals(false, tieBreakEngine.isTieBreakWon());
+        assertEquals(false, matchScore.isTieBreakWon());
     }
 
 
@@ -90,7 +90,7 @@ public class TieBreakTest {
         tieBreakEngine.calculation(concretePlayer, matchScore);
         assertEquals(8, matchScore.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
         assertEquals(8, matchScore.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
-        assertEquals(false, tieBreakEngine.isTieBreakWon());
+        assertEquals(false, matchScore.isTieBreakWon());
     }
 
 

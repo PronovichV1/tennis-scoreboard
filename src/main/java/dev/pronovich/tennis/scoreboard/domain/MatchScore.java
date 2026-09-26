@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -18,12 +17,24 @@ public class MatchScore {
 
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
+    private boolean isTieBreakWon;
+    private boolean isGameWon;
     private Player winner;
 
     public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
         this.playerScore1 = playerScore1;
         this.playerScore2 = playerScore2;
         winner = null;
+    }
+
+    public void activateTieBreak(){
+        getPlayerScore1().setTieBreakPoints(0);
+        getPlayerScore2().setTieBreakPoints(0);
+    }
+
+    public void deactivateTieBreak() {
+        getPlayerScore1().setTieBreakPoints(null);
+        getPlayerScore2().setTieBreakPoints(null);
     }
 
 
@@ -65,5 +76,9 @@ public class MatchScore {
             return playerScore2.getPlayer().getUuid();
         }
         throw  new PlayerNotExist("Player with this uuid is not exist");
+    }
+
+    public boolean isTieBreakWon() {
+       return isTieBreakWon;
     }
 }

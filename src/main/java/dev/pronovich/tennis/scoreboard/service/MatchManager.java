@@ -1,8 +1,7 @@
 package dev.pronovich.tennis.scoreboard.service;
 
-import dev.pronovich.tennis.scoreboard.dao.MatchDaoImpl;
+
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
-import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +16,9 @@ public class MatchManager {
     private FinishedMatchManager finishedMatchManager;
 
     @Autowired
-    public MatchManager(MatchEngine matchEngine, FinishedMatchManager finishedMatchManager) {
-        this.ongoingMatches = new OngoingMatches();
-        this.matchEngine = matchEngine;
+    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager) {
+        this.ongoingMatches = ongoingMatches;
+        this.matchEngine = new MatchEngine();
         this.finishedMatchManager = finishedMatchManager;
     }
 
