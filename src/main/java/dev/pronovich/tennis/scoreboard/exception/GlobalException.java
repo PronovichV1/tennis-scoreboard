@@ -2,6 +2,7 @@ package dev.pronovich.tennis.scoreboard.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,10 +28,10 @@ public class GlobalException{
 
 
     @ExceptionHandler(DatabaseException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND) /// <- change http status
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public Map<String, String> handleDatabaseException(DatabaseException ex){
         Map<String, String> response = new HashMap<>();
-        response.put("message", ex.getMessage()); /// <- change error status
+        response.put("message", ex.getMessage());
         return response;
     }
 }

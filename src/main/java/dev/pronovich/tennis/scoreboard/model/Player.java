@@ -36,11 +36,11 @@ public class Player {
             return false;
         }
         Player player = (Player) obj;
-        return Objects.equals(this.uuid, player.uuid);
+        return Objects.equals(this.name, player.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(name);
     }
 }

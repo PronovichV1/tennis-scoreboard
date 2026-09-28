@@ -69,6 +69,7 @@ public class MatchServlet {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
+        /// add check for name which is already created
         validation.validate(generatedMatch);
         Match match = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(match);

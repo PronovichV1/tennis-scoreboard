@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public class MatchDaoImpl implements BaseDao<Match>{
 
-    SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     @Autowired
     public MatchDaoImpl(SessionFactory sessionFactory){
@@ -25,8 +25,6 @@ public class MatchDaoImpl implements BaseDao<Match>{
     public Optional<Match> save(Match match) {
        try (Session session = sessionFactory.openSession()){
            Transaction tx = session.beginTransaction();
-           session.persist(match.getPlayer1());
-           session.persist(match.getPlayer2());
            Match savedMatch = session.merge(match);
            tx.commit();
            return Optional.of(savedMatch);
