@@ -5,8 +5,6 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
-import org.springframework.stereotype.Service;
-
 
 @Getter
 public class ScoreEngine implements Engine {
