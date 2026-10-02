@@ -22,13 +22,13 @@ public class GameEngine implements Engine {
         if (concretePlayerScore.getPoints() == Points.FORTY &&
                 (rivalPlayerScore.getPoints().compareTo(Points.FORTY) < 0)){
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
-            return Optional.of(player);
+            return Optional.of(concretePlayerScore.getPlayer());
         }
         /// AD / 40  -> winGame
         if (concretePlayerScore.getPoints() == Points.ADVANTAGE &&
         rivalPlayerScore.getPoints() == Points.FORTY){
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
-            return Optional.of(player);
+            return Optional.of(concretePlayerScore.getPlayer());
         }
         /// 40 / AD -> 40 / 40
         if (concretePlayerScore.getPoints() == Points.FORTY &&

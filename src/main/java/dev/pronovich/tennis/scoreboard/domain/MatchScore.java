@@ -56,12 +56,14 @@ public class MatchScore {
 
 
     public boolean isTieBreak(){
+
+
         return playerScore1.getTieBreakPoints() != null && playerScore2.getTieBreakPoints() != null;
     }
 
     public void assignTheWinner(Player player){
         winner = player;
-    } /// NEEDED?
+    }
 
 
     public UUID getUuidBy(String name) {

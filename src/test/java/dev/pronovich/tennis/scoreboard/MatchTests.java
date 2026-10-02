@@ -55,7 +55,7 @@ public class MatchTests {
 
 
 
-    /// Add a test concrete player win the Match
+
     @Test
     @DisplayName("Concrete player win a match: 2:0")
     void concretePlayer_winMatch(){
@@ -69,12 +69,10 @@ public class MatchTests {
         matchScore.getSpecificPlayerScore(concretePlayer).setSets(1);
         matchScore.getSpecificPlayerScore(rivalPlayer).setSets(0);
 
-        matchEngine.calculation(concretePlayer, matchScore);
+        Optional<Player> winner = matchEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(matchScore.getWinner().getName(), concretePlayer.getName());
-
-
+        assertEquals(true, winner.isPresent());
     }
 
-    /// ADD TEST FOR ILLEGAL OPTION 9-6
 }

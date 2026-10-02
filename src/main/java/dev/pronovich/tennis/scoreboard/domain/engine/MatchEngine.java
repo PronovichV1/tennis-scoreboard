@@ -14,23 +14,22 @@ public class MatchEngine implements Engine {
     public MatchEngine(){
         this.gameEngine = new GameEngine();
         this.setEngine = new SetEngine();
-
     }
 
 
     @Override
     public Optional<Player> calculation(Player player, MatchScore matchScore) {
 
-        Optional<Player> gameWinner = gameEngine.calculation(player, matchScore);
-        Optional<Player> setWinner;
+        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
+        Optional<Player> gameWinner = gameEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
 
-        if (gameWinner.isPresent()){
-            setWinner = setEngine.calculation(player, matchScore);
+        if (gameWinner.isPresent() || (matchScore.isTieBreak() && gameWinner.isEmpty())){
+            setEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
         }
 
         if (matchScore.isMatchedFinished()){
-            matchScore.assignTheWinner(player);
-            return Optional.of(player);
+            matchScore.assignTheWinner(concretePlayerScore.getPlayer());
+            return Optional.of(concretePlayerScore.getPlayer());
         }
         return Optional.empty();
 

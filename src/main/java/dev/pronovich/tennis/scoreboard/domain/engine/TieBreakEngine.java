@@ -12,14 +12,14 @@ public class TieBreakEngine implements Engine{
     public Optional<Player> calculation(Player player, MatchScore matchScore) {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
-        /// TIE-BREAK
-        /// if Concrete player has 7 points with range of 2 or more, he wins
-        if (concretePlayerScore.getTieBreakPoints() > 6 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)){
-            matchScore.deactivateTieBreak();
-            return Optional.of(player);
-        }
-        /// increase tieBreakPoints for concretePlayer by 1
         concretePlayerScore.addTieBreakPoints();
+        /// TIE-BREAK
+        /// increase tieBreakPoints for concretePlayer by 1
+        /// if Concrete player has 7 points with range of 2 or more, he wins
+        if (concretePlayerScore.getTieBreakPoints() >= 7 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)){
+            matchScore.deactivateTieBreak();
+            return Optional.of(concretePlayerScore.getPlayer());
+        }
         return Optional.empty();
     }
 

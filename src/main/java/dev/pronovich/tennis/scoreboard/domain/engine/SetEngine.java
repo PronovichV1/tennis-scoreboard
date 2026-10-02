@@ -19,19 +19,19 @@ public class SetEngine implements Engine {
 
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
-
         /// Is it TieBreak is active?
         if (matchScore.isTieBreak()){
-           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(player, matchScore);
-           /// win set via tie-break or not;
+           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+           /// win a set via tie-break or not;
            if (tieBreakWinner.isPresent()){
                concretePlayerScore.addSetsScore();
                resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
-               return Optional.of(player);
+               return Optional.of(concretePlayerScore.getPlayer());
            }
             return Optional.empty();
         }
 
+        concretePlayerScore.addGamesScore();
         /// Is tie-break need to be activated
         if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
             matchScore.activateTieBreak();
@@ -39,13 +39,11 @@ public class SetEngine implements Engine {
         }
 
         /// regular set flow
-        if (concretePlayerScore.getGames() == 5 && rivalPlayerScore.getGames() < 5){
+        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5){
             concretePlayerScore.addSetsScore();
             resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
-            return Optional.of(player);
+            return Optional.of(concretePlayerScore.getPlayer());
         }
-
-        concretePlayerScore.addGamesScore();
         return Optional.empty();
     }
 

@@ -39,7 +39,6 @@ public class MatchManager {
     public Match addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid());
         Optional<Player> matchWinner = matchEngine.calculation(player, currentMatch.getMatchScore());
-
         if (matchWinner.isPresent()) {
             currentMatch.setWinner(currentMatch.getMatchScore().getWinner());
             finishedMatchManager.save(match);

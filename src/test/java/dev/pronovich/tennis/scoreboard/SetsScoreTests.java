@@ -58,14 +58,12 @@ public class SetsScoreTests {
     @DisplayName("Concrete player win a set: 6 - 4,3,2,1,0")
     void playerWinGame_WhenPlayerHasSixGamesAndTwoGamesLead(Integer concretePlayerGameScore, Integer rivalPlayerGameScore){
 
-
         matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
         matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
         matchScore.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
         matchScore.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
 
         Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
-
 
         assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
         assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
@@ -85,16 +83,17 @@ public class SetsScoreTests {
         matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
 
         matchEngine.calculation(concretePlayer, matchScore);
-        matchScore.getSpecificPlayerScore(concretePlayer).setTieBreakPoints(6);
+        matchScore.getSpecificPlayerScore(concretePlayer).setTieBreakPoints(7);
         matchScore.getSpecificPlayerScore(rivalPlayer).setTieBreakPoints(5);
 
-        matchEngine.calculation(concretePlayer, matchScore);
+
+        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
         assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
-
+        assertEquals(true, setWinner.isPresent());
     }
 
     @Test
