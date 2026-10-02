@@ -9,7 +9,10 @@ import java.util.Optional;
 
 public class SetEngine implements Engine {
 
-
+    private final TieBreakEngine tieBreakEngine;
+    public SetEngine() {
+        tieBreakEngine = new TieBreakEngine();
+    }
 
     @Override
     public Optional<Player> calculation(Player player, MatchScore matchScore) {
@@ -17,42 +20,41 @@ public class SetEngine implements Engine {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
-        /// regular set flow
-        /*
-         concretePlayerScore.addGamesScore(); /// add points
+        /// Is it TieBreak is active?
+        if (matchScore.isTieBreak()){
+           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(player, matchScore);
+           /// win set via tie-break or not;
+           if (tieBreakWinner.isPresent()){
+               concretePlayerScore.addSetsScore();
+               resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
+               return Optional.of(player);
+           }
+            return Optional.empty();
+        }
 
+        /// Is tie-break need to be activated
         if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
             matchScore.activateTieBreak();
-            return;
+            return Optional.empty();
         }
 
-        if (isPlayerWinSet(matchScore, concretePlayerScore)){ /// win set
+        /// regular set flow
+        if (concretePlayerScore.getGames() == 5 && rivalPlayerScore.getGames() < 5){
             concretePlayerScore.addSetsScore();
-            concretePlayerScore.resetGames();
-            rivalPlayerScore.resetGames();
-            matchScore.setTieBreakWon(false);
+            resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
+            return Optional.of(player);
         }
-         */
 
-
-
-        /// TIE-BREAK
-        /// increase tieBreakPoints for concretePlayer by 1
-        concretePlayerScore.addTieBreakPoints();
-
-        /// if Concrete player has 7 points with range of 2 or more he wins
-        if (concretePlayerScore.getTieBreakPoints() >= 7 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)){
-            matchScore.deactivateTieBreak();
-            matchScore.setTieBreakWon(true);
-        }
+        concretePlayerScore.addGamesScore();
         return Optional.empty();
     }
 
 
-
-
-    private boolean isTieBreakPointsDifferenceMoreThenTwo(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        return concretePlayerScore.getTieBreakPoints() - rivalPlayerScore.getTieBreakPoints() >= 2;
+    private void resetGamesForBothPlayers(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
+        concretePlayerScore.resetGames();
+        rivalPlayerScore.resetGames();
     }
+
+
 
 }

@@ -4,7 +4,6 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.GameEngine;
-import dev.pronovich.tennis.scoreboard.domain.engine.SetEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ScoreTests {
+public class GameScoreTests {
 
 
     private static GameEngine gameEngine;

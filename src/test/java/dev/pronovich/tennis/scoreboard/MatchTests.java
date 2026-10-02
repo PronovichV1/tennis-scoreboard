@@ -17,6 +17,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,7 +70,7 @@ public class MatchTests {
         matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
         matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
 
-        matchEngine.calculation(concretePlayer, matchScore);
+        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
 
         assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
@@ -76,7 +78,7 @@ public class MatchTests {
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
         assertEquals(6, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
 
-        assertEquals(true, matchScore.isTieBreak());
+        assertEquals(false, setWinner.isPresent());
 
     }
 
@@ -92,14 +94,14 @@ public class MatchTests {
         matchScore.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
         matchScore.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
 
-       matchEngine.calculation(concretePlayer, matchScore);
+       Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
 
        assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
-
+        assertEquals(true, setWinner.isPresent());
     }
 
     /// win a set after tie-break games 6-6 -> isTieBreakWon. Set 1-0
@@ -124,6 +126,8 @@ public class MatchTests {
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
 
     }
+
+
 
 
     /// Add a test concrete player win the Match
@@ -153,7 +157,8 @@ public class MatchTests {
         return Stream.of(Arguments.of(5, 4),
                 Arguments.of(5, 3),
                 Arguments.of(5, 2),
-                Arguments.of(5, 1)
+                Arguments.of(5, 1),
+                Arguments.of(5, 0)
         );
     }
 

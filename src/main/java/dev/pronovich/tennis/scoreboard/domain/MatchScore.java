@@ -18,8 +18,6 @@ public class MatchScore {
 
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
-    private boolean isTieBreakWon;
-    private boolean isGameWon;
     private Player winner;
 
     public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
@@ -79,9 +77,6 @@ public class MatchScore {
         throw  new PlayerNotExist("Player with this uuid is not exist");
     }
 
-    public boolean isTieBreakWon() {
-       return isTieBreakWon;
-    }
 
 
     public boolean isMatchedFinished() {

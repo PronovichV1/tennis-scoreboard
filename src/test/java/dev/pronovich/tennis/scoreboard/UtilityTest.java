@@ -3,6 +3,7 @@ package dev.pronovich.tennis.scoreboard;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
+import dev.pronovich.tennis.scoreboard.domain.engine.TieBreakEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 public class UtilityTest {
+
 
     @Test
     @DisplayName("Get the first Player Entity")
@@ -43,5 +45,27 @@ public class UtilityTest {
 
         assertEquals(secondPlayer, actualPlayerScore.getPlayer());
         assertEquals(secondPlayer.getName(), actualPlayerScore.getPlayer().getName());
+    }
+
+    @Test
+    @DisplayName("Get the first Player Entity")
+    void isTieBreakPointsDifferenceMoreThenTwoCheck(){
+        TieBreakEngine tieBreakEngine = new TieBreakEngine();
+
+        Player firstPlayer = new Player("Sample John");
+        Player secondPlayer = new Player("Sample Tom");
+        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
+                , new PlayerScore(secondPlayer));
+        PlayerScore firstPlayerScore = matchScore.getPlayerScore1();
+        PlayerScore secondPlayerScore = matchScore.getPlayerScore2();
+
+        firstPlayerScore.setTieBreakPoints(7);
+        secondPlayerScore.setTieBreakPoints(5);
+
+       boolean check = tieBreakEngine.isTieBreakPointsDifferenceMoreThenTwo(firstPlayerScore, secondPlayerScore);
+
+        assertEquals(true, check);
+
+
     }
 }
