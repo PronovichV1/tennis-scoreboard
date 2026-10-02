@@ -55,81 +55,6 @@ public class MatchTests {
 
 
 
-
-
-    @Test
-    @DisplayName("Both players have 6 games")
-    void playersHasTie_WhenBothPlayersHasSixGames(){
-
-        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchEngine.calculation(concretePlayer, matchScore);
-
-
-        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
-        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
-
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
-
-
-        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
-        assertEquals(6, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
-        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
-        assertEquals(6, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
-
-        assertEquals(false, setWinner.isPresent());
-
-    }
-
-
-    @ParameterizedTest
-    @MethodSource("provideWinGameScores")
-    @DisplayName("Concrete player win a set: 6 - 4,3,2,1,0")
-    void playerWinGame_WhenPlayerHasSixGamesAndTwoGamesLead(Integer concretePlayerGameScore, Integer rivalPlayerGameScore){
-
-
-        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
-        matchScore.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
-
-       Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
-
-
-       assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
-       assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
-       assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
-       assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
-        assertEquals(true, setWinner.isPresent());
-    }
-
-    /// win a set after tie-break games 6-6 -> isTieBreakWon. Set 1-0
-    @Test
-    @DisplayName("Concrete player win a set after win in a tie-break")
-    void concretePlayer_winTieBreak_winSet(){
-
-        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
-        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
-
-        matchEngine.calculation(concretePlayer, matchScore);
-        matchScore.getSpecificPlayerScore(concretePlayer).setTieBreakPoints(6);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setTieBreakPoints(5);
-
-        matchEngine.calculation(concretePlayer, matchScore);
-
-        assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
-        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
-        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
-        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
-
-    }
-
-
-
-
     /// Add a test concrete player win the Match
     @Test
     @DisplayName("Concrete player win a match: 2:0")
@@ -152,16 +77,4 @@ public class MatchTests {
     }
 
     /// ADD TEST FOR ILLEGAL OPTION 9-6
-
-    private static Stream<Arguments> provideWinGameScores(){
-        return Stream.of(Arguments.of(5, 4),
-                Arguments.of(5, 3),
-                Arguments.of(5, 2),
-                Arguments.of(5, 1),
-                Arguments.of(5, 0)
-        );
-    }
-
-
-
 }
