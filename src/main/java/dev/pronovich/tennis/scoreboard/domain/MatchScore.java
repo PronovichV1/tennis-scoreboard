@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -62,7 +63,7 @@ public class MatchScore {
 
     public void assignTheWinner(Player player){
         winner = player;
-    }
+    } /// NEEDED?
 
 
     public UUID getUuidBy(String name) {
@@ -80,5 +81,10 @@ public class MatchScore {
 
     public boolean isTieBreakWon() {
        return isTieBreakWon;
+    }
+
+
+    public boolean isMatchedFinished() {
+        return playerScore1.getSets() == 2 || playerScore2.getSets() == 2;
     }
 }

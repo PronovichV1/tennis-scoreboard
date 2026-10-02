@@ -4,7 +4,7 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
-import dev.pronovich.tennis.scoreboard.domain.engine.TieBreakEngine;
+import dev.pronovich.tennis.scoreboard.domain.engine.SetEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ public class MatchTests {
     private PlayerScore rivalPlayerMatchScore;
     private MatchScore matchScore;
     private MatchEngine matchEngine;
-    private TieBreakEngine tieBreakEngine;
+    private SetEngine setEngine;
 
 
 
@@ -44,7 +44,7 @@ public class MatchTests {
 
     @BeforeEach
     void setUpBeforeEach(){
-        tieBreakEngine = new TieBreakEngine();
+        setEngine = new SetEngine();
         matchEngine = new MatchEngine();
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);

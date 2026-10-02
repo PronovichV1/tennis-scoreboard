@@ -4,31 +4,43 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 
+import java.util.Optional;
+
 public class MatchEngine implements Engine {
 
-    private final ScoreEngine scoreEngine;
-    private final TieBreakEngine tieBreak ;
+    private final GameEngine gameEngine;
+    private final SetEngine setEngine ;
 
     public MatchEngine(){
-        this.scoreEngine = new ScoreEngine();
-        this.tieBreak = new TieBreakEngine();
+        this.gameEngine = new GameEngine();
+        this.setEngine = new SetEngine();
 
     }
 
 
     @Override
-    public void calculation(Player player, MatchScore matchScore) {
+    public Optional<Player> calculation(Player player, MatchScore matchScore) {
 
-        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
-        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
+        Optional<Player> gameWinner = gameEngine.calculation(player, matchScore);
+        Optional<Player> setWinner;
 
+        if (gameWinner.isPresent()){
+            setWinner = setEngine.calculation(player, matchScore);
+        }
+
+        if (matchScore.isMatchedFinished()){
+            matchScore.assignTheWinner(player);
+            return Optional.of(player);
+        }
+        return Optional.empty();
+
+        /* Old approach
         if (matchScore.isTieBreak()) {
             tieBreak.calculation(concretePlayerScore.getPlayer(), matchScore);
         } else {
-            scoreEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+            gameEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
         }
 
-        /// bad ddd design if  !matchScore().gameIsWon() || (matchScore.isOn && !matchScore.isTieBreakIsWon())
         if (!matchScore.isGameWon() || (matchScore.isTieBreak() && !matchScore.isTieBreakWon())){
             return;
         }
@@ -51,7 +63,8 @@ public class MatchEngine implements Engine {
             if (isPlayerWinMatch(player, matchScore)) { /// WINNER
                 matchScore.assignTheWinner(concretePlayerScore.getPlayer());
             }
-        }
+         */
+    }
 
     /// base win
     private boolean isPlayerWinSet(MatchScore matchScore, PlayerScore concretePLayerScore) {

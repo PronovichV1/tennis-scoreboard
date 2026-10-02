@@ -8,6 +8,8 @@ import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class MatchManager {
 
@@ -36,9 +38,9 @@ public class MatchManager {
 
     public Match addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid());
-        matchEngine.calculation(player, currentMatch.getMatchScore());
+        Optional<Player> matchWinner = matchEngine.calculation(player, currentMatch.getMatchScore());
 
-        if (currentMatch.getMatchScore().getWinner() != null) {
+        if (matchWinner.isPresent()) {
             currentMatch.setWinner(currentMatch.getMatchScore().getWinner());
             finishedMatchManager.save(match);
             ongoingMatches.remove(match.getUuid());
