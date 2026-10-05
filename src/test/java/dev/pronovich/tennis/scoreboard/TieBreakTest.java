@@ -1,8 +1,7 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.domain.engine.SetEngine;
 import dev.pronovich.tennis.scoreboard.domain.engine.TieBreakEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.BeforeAll;
@@ -25,7 +24,7 @@ public class TieBreakTest {
 
 
     private static TieBreakEngine tieBreakEngine;
-    private static MatchScore matchScore;
+    private static TennisMatch tennisMatch;
     private static Player concretePlayer;
     private static Player rivalPlayer;
 
@@ -37,7 +36,7 @@ public class TieBreakTest {
     static void setUpBase(){
         concretePlayer = new Player("Bob");
         rivalPlayer = new Player("Jon");
-        matchScore = new MatchScore(
+        tennisMatch = new TennisMatch(
                 new PlayerScore(concretePlayer),
                 new PlayerScore(rivalPlayer));
         tieBreakEngine = new TieBreakEngine();
@@ -48,7 +47,7 @@ public class TieBreakTest {
     void preSetUpMatchScore(){
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
-        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
+        tennisMatch = new TennisMatch(concretePlayerMatchScore, rivalPlayerMatchScore);
     }
 
 
@@ -62,7 +61,7 @@ public class TieBreakTest {
         concretePlayerMatchScore.setTieBreakPoints(concretePlayerTieBreakPoints);
         rivalPlayerMatchScore.setTieBreakPoints(rivalPlayerTieBreakPoints);
 
-        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, matchScore);
+        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, tennisMatch);
         assertEquals(true, tieBreakWinner.isPresent());
     }
 
@@ -73,9 +72,9 @@ public class TieBreakTest {
         concretePlayerMatchScore.setTieBreakPoints(7);
         rivalPlayerMatchScore.setTieBreakPoints(8);
 
-        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, matchScore);
-        assertEquals(8, matchScore.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
-        assertEquals(8, matchScore.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
+        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, tennisMatch);
+        assertEquals(8, tennisMatch.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
+        assertEquals(8, tennisMatch.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
         assertEquals(true, tieBreakWinner.isEmpty());
     }
 
@@ -87,9 +86,9 @@ public class TieBreakTest {
         concretePlayerMatchScore.setTieBreakPoints(7);
         rivalPlayerMatchScore.setTieBreakPoints(8);
 
-        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, matchScore);
-        assertEquals(8, matchScore.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
-        assertEquals(8, matchScore.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
+        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, tennisMatch);
+        assertEquals(8, tennisMatch.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
+        assertEquals(8, tennisMatch.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
         assertEquals(true,  tieBreakWinner.isEmpty());
     }
 
@@ -103,10 +102,10 @@ public class TieBreakTest {
         concretePlayerMatchScore.setTieBreakPoints(concretePlayerTieBreakPoints);
         rivalPlayerMatchScore.setTieBreakPoints(rivalPlayerTieBreakPoints);
 
-        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, matchScore);
+        Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayer, tennisMatch);
 
-        assertEquals(concretePlayerTieBreakPoints + 1, matchScore.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
-        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
+        assertEquals(concretePlayerTieBreakPoints + 1, tennisMatch.getSpecificPlayerScore(concretePlayer).getTieBreakPoints());
+        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getTieBreakPoints());
         assertEquals(true,  tieBreakWinner.isEmpty());
 
 

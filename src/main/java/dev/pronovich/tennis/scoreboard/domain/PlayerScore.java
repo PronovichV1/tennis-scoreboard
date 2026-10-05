@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
-import dev.pronovich.tennis.scoreboard.model.Player;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,13 +10,13 @@ import lombok.Setter;
 @Setter
 public class PlayerScore {
 
-    private Player player;
+    private TennisPlayer player;
     private Points points;
     private Integer games;
     private Integer sets;
     private Integer tieBreakPoints;
 
-    public PlayerScore(Player player) {
+    public PlayerScore(TennisPlayer player) {
         this.player = player;
         points = Points.ZERO;
         games = 0;

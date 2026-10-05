@@ -7,20 +7,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Locale;
-import java.util.Optional;
 import java.util.UUID;
 
 
 @Getter
 @Setter
 
-public class MatchScore {
+public class TennisMatch {
 
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
-    private Player winner;
+    private TennisPlayer winner;
 
-    public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
+    public TennisMatch(PlayerScore playerScore1, PlayerScore playerScore2) {
         this.playerScore1 = playerScore1;
         this.playerScore2 = playerScore2;
         winner = null;
@@ -61,20 +60,20 @@ public class MatchScore {
         return playerScore1.getTieBreakPoints() != null && playerScore2.getTieBreakPoints() != null;
     }
 
-    public void assignTheWinner(Player player){
+    public void assignTheWinner(TennisPlayer player){
         winner = player;
     }
 
 
     public UUID getUuidBy(String name) {
         String polishedName = name.toLowerCase(Locale.ROOT).trim();
-        String firstPlayerName = playerScore1.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
-        String secondPlayerName = playerScore2.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
+        String firstPlayerName = playerScore1.getPlayer().name().toLowerCase(Locale.ROOT).trim();
+        String secondPlayerName = playerScore2.getPlayer().name().toLowerCase(Locale.ROOT).trim();
         if (firstPlayerName.equals(polishedName)){
-            return playerScore1.getPlayer().getUuid();
+            return playerScore1.getPlayer().uuid();
         }
         if (secondPlayerName.equals(polishedName)){
-            return playerScore2.getPlayer().getUuid();
+            return playerScore2.getPlayer().uuid();
         }
         throw  new PlayerNotExist("Player with this uuid is not exist");
     }

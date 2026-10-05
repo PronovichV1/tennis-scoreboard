@@ -19,7 +19,6 @@ import dev.pronovich.tennis.scoreboard.validator.Validator;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,7 +50,7 @@ public class MatchServlet {
         /// add validator for uuid
         Player player = playerMapper.toPlayerEntity(playerNameDto);
         Match match = ongoingMatches.findById(uuid);
-        player.setUuid(match.getMatchScore().getUuidBy(player.getName()));
+        player.setUuid(match.getTennisMatch().getUuidBy(player.getName()));
         Match afterCalculation = matchManager.addPointsTo(match, player);
         MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
        return response;

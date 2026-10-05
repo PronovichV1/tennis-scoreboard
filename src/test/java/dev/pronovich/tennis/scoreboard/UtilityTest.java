@@ -1,9 +1,7 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
-import dev.pronovich.tennis.scoreboard.domain.engine.TieBreakEngine;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,10 +20,10 @@ public class UtilityTest {
 
         Player firstPlayer = new Player("Sample John");
         Player secondPlayer = new Player("Sample Tom");
-        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
+        TennisMatch tennisMatch = new TennisMatch(new PlayerScore(firstPlayer)
                 , new PlayerScore(secondPlayer));
 
-        PlayerScore actualPlayerScore = matchScore.getSpecificPlayerScore(firstPlayer);
+        PlayerScore actualPlayerScore = tennisMatch.getSpecificPlayerScore(firstPlayer);
 
         assertEquals(firstPlayer, actualPlayerScore.getPlayer());
         assertEquals(firstPlayer.getName(), actualPlayerScore.getPlayer().getName());
@@ -38,10 +36,10 @@ public class UtilityTest {
 
         Player firstPlayer = new Player("Sample John");
         Player secondPlayer = new Player("Sample Tom");
-        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
+        TennisMatch tennisMatch = new TennisMatch(new PlayerScore(firstPlayer)
                 , new PlayerScore(secondPlayer));
 
-        PlayerScore actualPlayerScore = matchScore.getAnotherPlayerScore(firstPlayer);
+        PlayerScore actualPlayerScore = tennisMatch.getAnotherPlayerScore(firstPlayer);
 
         assertEquals(secondPlayer, actualPlayerScore.getPlayer());
         assertEquals(secondPlayer.getName(), actualPlayerScore.getPlayer().getName());

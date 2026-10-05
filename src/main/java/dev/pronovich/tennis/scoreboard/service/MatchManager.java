@@ -3,6 +3,7 @@ package dev.pronovich.tennis.scoreboard.service;
 
 import dev.pronovich.tennis.scoreboard.dao.PlayerDaoImpl;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
+import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,13 +19,15 @@ public class MatchManager {
     private MatchEngine matchEngine;
     private FinishedMatchManager finishedMatchManager;
     private PlayerDaoImpl playerDao;
+    private PlayerMapper playerMapper;
 
     @Autowired
-    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao) {
+    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao, PlayerMapper playerMapper) {
         this.ongoingMatches = ongoingMatches;
         this.matchEngine = new MatchEngine();
         this.finishedMatchManager = finishedMatchManager;
         this.playerDao = playerDao;
+        this.playerMapper = playerMapper;
     }
 
 
@@ -38,9 +41,9 @@ public class MatchManager {
 
     public Match addPointsTo(Match match, Player player) {
         Match currentMatch = ongoingMatches.findById(match.getUuid());
-        Optional<Player> matchWinner = matchEngine.calculation(player, currentMatch.getMatchScore());
+        Optional<Player> matchWinner = matchEngine.calculation(player, currentMatch.getTennisMatch());
         if (matchWinner.isPresent()) {
-            currentMatch.setWinner(currentMatch.getMatchScore().getWinner());
+            currentMatch.setWinner(currentMatch.getTennisMatch().getWinner());
             finishedMatchManager.save(match);
             ongoingMatches.remove(match.getUuid());
         }

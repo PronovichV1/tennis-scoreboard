@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
@@ -11,15 +11,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @ExtendWith(MockitoExtension.class)
 public class MatchTests {
@@ -31,7 +27,7 @@ public class MatchTests {
 
     private PlayerScore concretePlayerMatchScore;
     private PlayerScore rivalPlayerMatchScore;
-    private MatchScore matchScore;
+    private TennisMatch tennisMatch;
     private MatchEngine matchEngine;
     private SetEngine setEngine;
 
@@ -50,7 +46,7 @@ public class MatchTests {
         matchEngine = new MatchEngine();
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
-        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
+        tennisMatch = new TennisMatch(concretePlayerMatchScore, rivalPlayerMatchScore);
     }
 
 
@@ -60,18 +56,18 @@ public class MatchTests {
     @DisplayName("Concrete player win a match: 2:0")
     void concretePlayer_winMatch(){
 
-        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
+        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
 
-        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(0);
+        tennisMatch.getSpecificPlayerScore(concretePlayer).setGames(5);
+        tennisMatch.getSpecificPlayerScore(rivalPlayer).setGames(0);
 
-        matchScore.getSpecificPlayerScore(concretePlayer).setSets(1);
-        matchScore.getSpecificPlayerScore(rivalPlayer).setSets(0);
+        tennisMatch.getSpecificPlayerScore(concretePlayer).setSets(1);
+        tennisMatch.getSpecificPlayerScore(rivalPlayer).setSets(0);
 
-        Optional<Player> winner = matchEngine.calculation(concretePlayer, matchScore);
+        Optional<Player> winner = matchEngine.calculation(concretePlayer, tennisMatch);
 
-        assertEquals(matchScore.getWinner().getName(), concretePlayer.getName());
+        assertEquals(tennisMatch.getWinner().getName(), concretePlayer.getName());
         assertEquals(true, winner.isPresent());
     }
 
