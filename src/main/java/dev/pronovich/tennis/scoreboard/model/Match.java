@@ -22,16 +22,16 @@ public class Match {
     private Integer id;
     @Transient
     private UUID uuid;
-    @ManyToOne
-    @JoinColumn(name="player1")
+    @ManyToOne(optional = false)
+    @JoinColumn(name="player1", nullable = false)
     private Player player1;
-    @ManyToOne
-    @JoinColumn(name="player2")
+    @ManyToOne(optional = false)
+    @JoinColumn(name="player2", nullable = false)
     private Player player2;
     @Transient
     private MatchScore matchScore;
-    @ManyToOne
-    @JoinColumn(name="winner")
+    @ManyToOne(optional = false)
+    @JoinColumn(name="winner", nullable = false)
     private Player winner;
 
     public Match(Player player1, Player player2) {

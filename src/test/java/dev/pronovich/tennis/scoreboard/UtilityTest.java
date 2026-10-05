@@ -47,25 +47,4 @@ public class UtilityTest {
         assertEquals(secondPlayer.getName(), actualPlayerScore.getPlayer().getName());
     }
 
-    @Test
-    @DisplayName("Get the first Player Entity")
-    void isTieBreakPointsDifferenceMoreThenTwoCheck(){
-        TieBreakEngine tieBreakEngine = new TieBreakEngine();
-
-        Player firstPlayer = new Player("Sample John");
-        Player secondPlayer = new Player("Sample Tom");
-        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
-                , new PlayerScore(secondPlayer));
-        PlayerScore firstPlayerScore = matchScore.getPlayerScore1();
-        PlayerScore secondPlayerScore = matchScore.getPlayerScore2();
-
-        firstPlayerScore.setTieBreakPoints(7);
-        secondPlayerScore.setTieBreakPoints(5);
-
-       boolean check = tieBreakEngine.isTieBreakPointsDifferenceMoreThenTwo(firstPlayerScore, secondPlayerScore);
-
-        assertEquals(true, check);
-
-
-    }
 }

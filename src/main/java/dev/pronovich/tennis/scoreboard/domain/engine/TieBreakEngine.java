@@ -23,7 +23,7 @@ public class TieBreakEngine implements Engine{
         return Optional.empty();
     }
 
-    public boolean isTieBreakPointsDifferenceMoreThenTwo(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
+    private boolean isTieBreakPointsDifferenceMoreThenTwo(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
         return (concretePlayerScore.getTieBreakPoints() - rivalPlayerScore.getTieBreakPoints()) >= 2;
     }
 }
