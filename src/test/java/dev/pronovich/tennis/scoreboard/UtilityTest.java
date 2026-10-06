@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.DisplayName;
@@ -20,10 +20,10 @@ public class UtilityTest {
 
         Player firstPlayer = new Player("Sample John");
         Player secondPlayer = new Player("Sample Tom");
-        TennisMatch tennisMatch = new TennisMatch(new PlayerScore(firstPlayer)
+        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
                 , new PlayerScore(secondPlayer));
 
-        PlayerScore actualPlayerScore = tennisMatch.getSpecificPlayerScore(firstPlayer);
+        PlayerScore actualPlayerScore = matchScore.getSpecificPlayerScore(firstPlayer);
 
         assertEquals(firstPlayer, actualPlayerScore.getPlayer());
         assertEquals(firstPlayer.getName(), actualPlayerScore.getPlayer().getName());
@@ -36,10 +36,10 @@ public class UtilityTest {
 
         Player firstPlayer = new Player("Sample John");
         Player secondPlayer = new Player("Sample Tom");
-        TennisMatch tennisMatch = new TennisMatch(new PlayerScore(firstPlayer)
+        MatchScore matchScore = new MatchScore(new PlayerScore(firstPlayer)
                 , new PlayerScore(secondPlayer));
 
-        PlayerScore actualPlayerScore = tennisMatch.getAnotherPlayerScore(firstPlayer);
+        PlayerScore actualPlayerScore = matchScore.getAnotherPlayerScore(firstPlayer);
 
         assertEquals(secondPlayer, actualPlayerScore.getPlayer());
         assertEquals(secondPlayer.getName(), actualPlayerScore.getPlayer().getName());

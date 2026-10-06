@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.domain.engine;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 
@@ -15,13 +15,13 @@ public class SetEngine implements Engine {
     }
 
     @Override
-    public Optional<Player> calculation(Player player, TennisMatch tennisMatch) {
+    public Optional<Player> calculation(Player player, MatchScore matchScore) {
 
-        PlayerScore concretePlayerScore = tennisMatch.getSpecificPlayerScore(player);
-        PlayerScore rivalPlayerScore = tennisMatch.getAnotherPlayerScore(player);
+        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
+        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
         /// Is it TieBreak is active?
-        if (tennisMatch.isTieBreak()){
-           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), tennisMatch);
+        if (matchScore.isTieBreak()){
+           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
            /// win a set via tie-break or not;
            if (tieBreakWinner.isPresent()){
                concretePlayerScore.addSetsScore();
@@ -34,7 +34,7 @@ public class SetEngine implements Engine {
         concretePlayerScore.addGamesScore();
         /// Is tie-break need to be activated
         if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
-            tennisMatch.activateTieBreak();
+            matchScore.activateTieBreak();
             return Optional.empty();
         }
 

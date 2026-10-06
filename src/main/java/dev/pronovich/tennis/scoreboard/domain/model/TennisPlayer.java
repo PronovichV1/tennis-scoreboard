@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard.domain;
+package dev.pronovich.tennis.scoreboard.domain.model;
 
 import java.util.Objects;
 import java.util.UUID;

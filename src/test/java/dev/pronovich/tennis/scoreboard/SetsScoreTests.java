@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
@@ -30,7 +30,7 @@ public class SetsScoreTests {
 
     private PlayerScore concretePlayerMatchScore;
     private PlayerScore rivalPlayerMatchScore;
-    private TennisMatch tennisMatch;
+    private MatchScore matchScore;
     private MatchEngine matchEngine;
     private SetEngine setEngine;
 
@@ -49,7 +49,7 @@ public class SetsScoreTests {
         matchEngine = new MatchEngine();
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
-        tennisMatch = new TennisMatch(concretePlayerMatchScore, rivalPlayerMatchScore);
+        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
     }
 
 
@@ -58,17 +58,17 @@ public class SetsScoreTests {
     @DisplayName("Concrete player win a set: 6 - 4,3,2,1,0")
     void playerWinGame_WhenPlayerHasSixGamesAndTwoGamesLead(Integer concretePlayerGameScore, Integer rivalPlayerGameScore){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
+        matchScore.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(1, tennisMatch.getSpecificPlayerScore(concretePlayer).getSets());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(concretePlayer).getGames());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getSets());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getGames());
+        assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
+        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
+        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
+        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
         assertEquals(true, setWinner.isPresent());
     }
 
@@ -77,22 +77,22 @@ public class SetsScoreTests {
     @DisplayName("Concrete player win a set after win in a tie-break")
     void concretePlayer_winTieBreak_winSet(){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setGames(5);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setGames(6);
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
+        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
 
-        matchEngine.calculation(concretePlayer, tennisMatch);
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setTieBreakPoints(7);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setTieBreakPoints(5);
+        matchEngine.calculation(concretePlayer, matchScore);
+        matchScore.getSpecificPlayerScore(concretePlayer).setTieBreakPoints(7);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setTieBreakPoints(5);
 
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(1, tennisMatch.getSpecificPlayerScore(concretePlayer).getSets());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getSets());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(concretePlayer).getGames());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getGames());
+        assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
+        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
+        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
+        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
         assertEquals(true, setWinner.isPresent());
     }
 
@@ -100,21 +100,21 @@ public class SetsScoreTests {
     @DisplayName("Both players have 6 games")
     void playersHasTie_WhenBothPlayersHasSixGames(){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        matchEngine.calculation(concretePlayer, tennisMatch);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchEngine.calculation(concretePlayer, matchScore);
 
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setGames(5);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setGames(6);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
+        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(concretePlayer).getSets());
-        assertEquals(6, tennisMatch.getSpecificPlayerScore(concretePlayer).getGames());
-        assertEquals(0, tennisMatch.getSpecificPlayerScore(rivalPlayer).getSets());
-        assertEquals(6, tennisMatch.getSpecificPlayerScore(rivalPlayer).getGames());
+        assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
+        assertEquals(6, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
+        assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
+        assertEquals(6, matchScore.getSpecificPlayerScore(rivalPlayer).getGames());
 
         assertEquals(false, setWinner.isPresent());
 

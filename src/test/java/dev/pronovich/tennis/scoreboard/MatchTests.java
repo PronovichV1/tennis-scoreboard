@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
@@ -27,7 +27,7 @@ public class MatchTests {
 
     private PlayerScore concretePlayerMatchScore;
     private PlayerScore rivalPlayerMatchScore;
-    private TennisMatch tennisMatch;
+    private MatchScore matchScore;
     private MatchEngine matchEngine;
     private SetEngine setEngine;
 
@@ -46,7 +46,7 @@ public class MatchTests {
         matchEngine = new MatchEngine();
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
-        tennisMatch = new TennisMatch(concretePlayerMatchScore, rivalPlayerMatchScore);
+        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
     }
 
 
@@ -56,18 +56,18 @@ public class MatchTests {
     @DisplayName("Concrete player win a match: 2:0")
     void concretePlayer_winMatch(){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ZERO);
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setGames(5);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setGames(0);
+        matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setGames(0);
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setSets(1);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setSets(0);
+        matchScore.getSpecificPlayerScore(concretePlayer).setSets(1);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setSets(0);
 
-        Optional<Player> winner = matchEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> winner = matchEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(tennisMatch.getWinner().getName(), concretePlayer.getName());
+        assertEquals(matchScore.getWinner().getName(), concretePlayer.getName());
         assertEquals(true, winner.isPresent());
     }
 

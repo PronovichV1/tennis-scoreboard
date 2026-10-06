@@ -2,6 +2,7 @@ package dev.pronovich.tennis.scoreboard.mapper;
 
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.dto.response.*;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import org.mapstruct.Mapper;
@@ -15,7 +16,7 @@ public interface MatchMapper {
 
 
     @Mapping(source = "uuid", target = "id")
-    CreatedMatchDto toCreatedMatchDto(Match match);
+    CreatedMatchDto toCreatedMatchDto(MatchScore matchScore);
 
     @Mapping(source = "player.name", target = "name")
     PlayerScoreResponseDto toPlayerScoreDto(PlayerScore playerScore);

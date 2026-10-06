@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.domain.engine;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.model.Player;
@@ -13,10 +13,10 @@ public class GameEngine implements Engine {
 
 
     @Override
-    public Optional<Player> calculation(Player player, TennisMatch tennisMatch) {
+    public Optional<Player> calculation(Player player, MatchScore matchScore) {
 
-       PlayerScore concretePlayerScore = tennisMatch.getSpecificPlayerScore(player);
-       PlayerScore rivalPlayerScore = tennisMatch.getAnotherPlayerScore(player);
+       PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
+       PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
 
         /// 40 / 30,15,0 -> winGame
         if (concretePlayerScore.getPoints() == Points.FORTY &&

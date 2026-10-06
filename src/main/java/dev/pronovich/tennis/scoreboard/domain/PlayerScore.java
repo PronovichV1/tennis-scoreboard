@@ -1,6 +1,7 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
 
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import lombok.Getter;
 import lombok.Setter;
 

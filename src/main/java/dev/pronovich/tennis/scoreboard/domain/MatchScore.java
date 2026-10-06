@@ -1,6 +1,7 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
 
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
@@ -13,13 +14,16 @@ import java.util.UUID;
 @Getter
 @Setter
 
-public class TennisMatch {
+public class MatchScore {
 
+    private UUID uuid;
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
     private TennisPlayer winner;
 
-    public TennisMatch(PlayerScore playerScore1, PlayerScore playerScore2) {
+
+    public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
+        uuid = UUID.randomUUID();
         this.playerScore1 = playerScore1;
         this.playerScore2 = playerScore2;
         winner = null;
@@ -60,24 +64,23 @@ public class TennisMatch {
         return playerScore1.getTieBreakPoints() != null && playerScore2.getTieBreakPoints() != null;
     }
 
-    public void assignTheWinner(TennisPlayer player){
-        winner = player;
-    }
 
-
-    public UUID getUuidBy(String name) {
+    public TennisPlayer getTennisPlayerBy(String name) {
         String polishedName = name.toLowerCase(Locale.ROOT).trim();
         String firstPlayerName = playerScore1.getPlayer().name().toLowerCase(Locale.ROOT).trim();
         String secondPlayerName = playerScore2.getPlayer().name().toLowerCase(Locale.ROOT).trim();
         if (firstPlayerName.equals(polishedName)){
-            return playerScore1.getPlayer().uuid();
+            return playerScore1.getPlayer();
         }
         if (secondPlayerName.equals(polishedName)){
-            return playerScore2.getPlayer().uuid();
+            return playerScore2.getPlayer();
         }
         throw  new PlayerNotExist("Player with this uuid is not exist");
     }
 
+    public void assignTheWinner(TennisPlayer player){
+        winner = player;
+    }
 
 
     public boolean isMatchedFinished() {

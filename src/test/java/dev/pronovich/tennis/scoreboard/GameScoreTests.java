@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.GameEngine;
@@ -25,7 +25,7 @@ public class GameScoreTests {
 
 
     private static GameEngine gameEngine;
-    private static TennisMatch tennisMatch;
+    private static MatchScore matchScore;
     private static Player concretePlayer;
     private static Player rivalPlayer;
 
@@ -38,7 +38,7 @@ public class GameScoreTests {
         gameEngine = new GameEngine();
         concretePlayer = new Player("Bob");
         rivalPlayer = new Player("Jon");
-        tennisMatch = new TennisMatch(
+        matchScore = new MatchScore(
                 new PlayerScore(concretePlayer),
                 new PlayerScore(rivalPlayer));
     }
@@ -48,7 +48,7 @@ public class GameScoreTests {
     void preSetUpMatchScore(){
         concretePlayerMatchScore = new PlayerScore(concretePlayer);
         rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
-        tennisMatch = new TennisMatch(concretePlayerMatchScore, rivalPlayerMatchScore);
+        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
     }
 
 
@@ -56,13 +56,13 @@ public class GameScoreTests {
     @DisplayName("Win with advantage: AD - 40")
     void playerWithAdvantageShouldWinTheGame(){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.ADVANTAGE);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.ADVANTAGE);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.FORTY);
         /// Act
-        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
         ///Assert
-        assertEquals(Points.ZERO, tennisMatch.getSpecificPlayerScore(concretePlayer).getPoints());
-        assertEquals(Points.ZERO, tennisMatch.getSpecificPlayerScore(rivalPlayer).getPoints());
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
         assertEquals(true, gameWinner.isPresent());
     }
 
@@ -70,13 +70,13 @@ public class GameScoreTests {
     @DisplayName("Return to DEUCE: 40 - AD")
     void playerWithAdvantageLosesPointAndScoreReturnsToDeuce(){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ADVANTAGE);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ADVANTAGE);
         /// Act
-        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
         ///Assert
-        assertEquals(Points.FORTY, tennisMatch.getSpecificPlayerScore(concretePlayer).getPoints());
-        assertEquals(Points.FORTY, tennisMatch.getSpecificPlayerScore(rivalPlayer).getPoints());
+        assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
+        assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
         assertEquals(true, gameWinner.isEmpty());
     }
 
@@ -86,13 +86,13 @@ public class GameScoreTests {
     @DisplayName("Base win of the game: 40 - 30")
     void concretePlayerShouldWinGame_WithVariousScoreCombinations(Points concretePlayerPoints, Points rivalPlayerPoints){
 
-        tennisMatch.getSpecificPlayerScore(concretePlayer).setPoints(concretePlayerPoints);
-        tennisMatch.getSpecificPlayerScore(rivalPlayer).setPoints(rivalPlayerPoints);
+        matchScore.getSpecificPlayerScore(concretePlayer).setPoints(concretePlayerPoints);
+        matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(rivalPlayerPoints);
 
-        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, tennisMatch);
+        Optional<Player> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
 
-        assertEquals(Points.ZERO, tennisMatch.getSpecificPlayerScore(concretePlayer).getPoints());
-        assertEquals(Points.ZERO, tennisMatch.getSpecificPlayerScore(rivalPlayer).getPoints());
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
+        assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
         assertEquals(true, gameWinner.isPresent());
     }
 

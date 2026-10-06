@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.domain.engine;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.model.Player;
 
@@ -18,17 +18,17 @@ public class MatchEngine implements Engine {
 
 
     @Override
-    public Optional<Player> calculation(Player player, TennisMatch tennisMatch) {
+    public Optional<Player> calculation(Player player, MatchScore matchScore) {
 
-        PlayerScore concretePlayerScore = tennisMatch.getSpecificPlayerScore(player);
-        Optional<Player> gameWinner = gameEngine.calculation(concretePlayerScore.getPlayer(), tennisMatch);
+        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
+        Optional<Player> gameWinner = gameEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
 
-        if (gameWinner.isPresent() || (tennisMatch.isTieBreak() && gameWinner.isEmpty())){
-            setEngine.calculation(concretePlayerScore.getPlayer(), tennisMatch);
+        if (gameWinner.isPresent() || (matchScore.isTieBreak() && gameWinner.isEmpty())){
+            setEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
         }
 
-        if (tennisMatch.isMatchedFinished()){
-            tennisMatch.assignTheWinner(concretePlayerScore.getPlayer());
+        if (matchScore.isMatchedFinished()){
+            matchScore.assignTheWinner(concretePlayerScore.getPlayer());
             return Optional.of(concretePlayerScore.getPlayer());
         }
         return Optional.empty();

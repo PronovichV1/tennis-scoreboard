@@ -1,6 +1,6 @@
 package dev.pronovich.tennis.scoreboard.model;
 
-import dev.pronovich.tennis.scoreboard.domain.TennisMatch;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,7 +29,7 @@ public class Match {
     @JoinColumn(name="player2", nullable = false)
     private Player player2;
     @Transient
-    private TennisMatch tennisMatch;
+    private MatchScore matchScore;
     @ManyToOne(optional = false)
     @JoinColumn(name="winner", nullable = false)
     private Player winner;
@@ -38,6 +38,6 @@ public class Match {
         uuid = UUID.randomUUID();
         this.player1 = player1;
         this.player2 = player2;
-        tennisMatch = new TennisMatch(new PlayerScore(player1), new PlayerScore(player2));
+        matchScore = new MatchScore(new PlayerScore(player1), new PlayerScore(player2));
     }
 }
