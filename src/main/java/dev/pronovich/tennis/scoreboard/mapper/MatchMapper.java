@@ -36,4 +36,9 @@ public interface MatchMapper {
     default String mapPoints(Points points){
         return points != null ? points.getCode() : null;
     }
+
+    @Mapping(source = "playerScore1", target = "firstPlayer")
+    @Mapping(source = "playerScore2", target = "secondPlayer")
+    @Mapping(source = "winner.name", target = "winnerName")
+    MatchScoreResponseDto toMatchScoreResponseDto(MatchScore matchScore);
 }

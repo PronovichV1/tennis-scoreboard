@@ -58,17 +58,17 @@ public class MatchServlet {
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){
+    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){ /// +
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
-        Match match = ongoingMatches.findById(matchUuidDto.uuid());
-        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(match);
+        MatchScore matchScore = ongoingMatches.findById(matchUuidDto.uuid());
+        MatchScoreResponseDto response = matchMapper.toMatchScoreResponseDto(matchScore);
         return response;
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
+    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// +
         validation.validate(generatedMatch);
         MatchScore matchScore = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(matchScore);
