@@ -38,6 +38,8 @@ public class Match {
         uuid = UUID.randomUUID();
         this.player1 = player1;
         this.player2 = player2;
+
+        /// remove later
         matchScore = new MatchScore(new PlayerScore(player1), new PlayerScore(player2));
     }
 }
