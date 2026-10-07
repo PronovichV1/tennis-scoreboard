@@ -5,6 +5,7 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
 import dev.pronovich.tennis.scoreboard.domain.engine.SetEngine;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(MockitoExtension.class)
 public class SetsScoreTests {
 
-    private static Player concretePlayer;
-    private static Player rivalPlayer;
+    private static TennisPlayer concretePlayer;
+    private static TennisPlayer rivalPlayer;
 
 
     private PlayerScore concretePlayerMatchScore;
@@ -38,8 +40,8 @@ public class SetsScoreTests {
 
     @BeforeAll
     static void setUpBeforeAll(){
-        concretePlayer = new Player("Bob");
-        rivalPlayer = new Player("Jon");
+        concretePlayer = new TennisPlayer(UUID.randomUUID(),"Bob");
+        rivalPlayer = new TennisPlayer(UUID.randomUUID(),"Jon");
 
     }
 
@@ -63,7 +65,7 @@ public class SetsScoreTests {
         matchScore.getSpecificPlayerScore(concretePlayer).setGames(concretePlayerGameScore);
         matchScore.getSpecificPlayerScore(rivalPlayer).setGames(rivalPlayerGameScore);
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
         assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getGames());
@@ -87,7 +89,7 @@ public class SetsScoreTests {
         matchScore.getSpecificPlayerScore(rivalPlayer).setTieBreakPoints(5);
 
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(1, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
         assertEquals(0, matchScore.getSpecificPlayerScore(rivalPlayer).getSets());
@@ -109,7 +111,7 @@ public class SetsScoreTests {
         matchScore.getSpecificPlayerScore(concretePlayer).setGames(5);
         matchScore.getSpecificPlayerScore(rivalPlayer).setGames(6);
 
-        Optional<Player> setWinner = setEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> setWinner = setEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(0, matchScore.getSpecificPlayerScore(concretePlayer).getSets());
         assertEquals(6, matchScore.getSpecificPlayerScore(concretePlayer).getGames());

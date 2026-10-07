@@ -3,7 +3,6 @@ package dev.pronovich.tennis.scoreboard.domain;
 
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,17 +39,17 @@ public class MatchScore {
     }
 
 
-    public PlayerScore getSpecificPlayerScore(Player player) {
+    public PlayerScore getSpecificPlayerScore(TennisPlayer tennisPlayer) {
         /// if someone pass
-        if (playerScore1.getPlayer().equals(player)){
+        if (playerScore1.getPlayer().equals(tennisPlayer)){
             return playerScore1;
         } else {
             return playerScore2;
         }
     }
 
-    public PlayerScore getAnotherPlayerScore(Player player) {
-        if (playerScore1.getPlayer().equals(player)) {
+    public PlayerScore getAnotherPlayerScore(TennisPlayer tennisPlayer) {
+        if (playerScore1.getPlayer().equals(tennisPlayer)) {
             return playerScore2;
         } else {
             return playerScore1;
@@ -78,8 +77,8 @@ public class MatchScore {
         throw  new PlayerNotExist("Player with this uuid is not exist");
     }
 
-    public void assignTheWinner(TennisPlayer player){
-        winner = player;
+    public void assignTheWinner(TennisPlayer tennisPlayer){
+        winner = tennisPlayer;
     }
 
 

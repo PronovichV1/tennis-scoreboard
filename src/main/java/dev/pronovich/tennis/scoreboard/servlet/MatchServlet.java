@@ -12,7 +12,6 @@ import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
-import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.FinishedMatchManager;
 import dev.pronovich.tennis.scoreboard.service.OngoingMatches;
@@ -47,12 +46,15 @@ public class MatchServlet {
 
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
+    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){ /// updated
         String playerName = playerNameDto.name();
         MatchScore matchScore = ongoingMatches.findById(uuid);
+        System.out.println(matchScore.getPlayerScore1().getPlayer().uuid());
+        System.out.println(matchScore.getPlayerScore2().getPlayer().uuid());
         TennisPlayer tennisPlayer = matchScore.getTennisPlayerBy(playerName);
+        System.out.println(tennisPlayer.uuid());
         MatchScore afterCalculation = matchManager.addPointsTo(matchScore, tennisPlayer);
-        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
+        MatchScoreResponseDto response = matchMapper.toCreateMatchScoreResponseDto(afterCalculation);
        return response;
     }
 

@@ -21,10 +21,11 @@ public interface MatchMapper {
     @Mapping(source = "player.name", target = "name")
     PlayerScoreResponseDto toPlayerScoreDto(PlayerScore playerScore);
 
-    @Mapping(source = "matchScore.playerScore1", target = "firstPlayer")
-    @Mapping(source = "matchScore.playerScore2", target = "secondPlayer")
+    /// updated
+    @Mapping(source = "playerScore1", target = "firstPlayer")
+    @Mapping(source = "playerScore2", target = "secondPlayer")
     @Mapping(source = "winner.name", target = "winnerName")
-    MatchScoreResponseDto toCreateMatchScore(Match match);
+    MatchScoreResponseDto toCreateMatchScoreResponseDto(MatchScore matchScore);
 
     @Mapping(source = "player1.name", target = "firstPlayerName")
     @Mapping(source = "player2.name", target = "secondPlayerName")
@@ -41,4 +42,10 @@ public interface MatchMapper {
     @Mapping(source = "playerScore2", target = "secondPlayer")
     @Mapping(source = "winner.name", target = "winnerName")
     MatchScoreResponseDto toMatchScoreResponseDto(MatchScore matchScore);
+
+    /// new one | for DDD
+    @Mapping(source = "playerScore1.player", target = "player1")
+    @Mapping(source = "playerScore2.player", target = "player2")
+    @Mapping(source = "winner", target = "winner")
+    Match toMatchEntity(MatchScore matchScore);
 }

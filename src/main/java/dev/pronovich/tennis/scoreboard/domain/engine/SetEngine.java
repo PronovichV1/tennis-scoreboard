@@ -2,7 +2,7 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.model.Player;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 
 import java.util.Optional;
 
@@ -15,13 +15,13 @@ public class SetEngine implements Engine {
     }
 
     @Override
-    public Optional<Player> calculation(Player player, MatchScore matchScore) {
+    public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
 
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
         /// Is it TieBreak is active?
         if (matchScore.isTieBreak()){
-           Optional<Player> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+           Optional<TennisPlayer> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
            /// win a set via tie-break or not;
            if (tieBreakWinner.isPresent()){
                concretePlayerScore.addSetsScore();

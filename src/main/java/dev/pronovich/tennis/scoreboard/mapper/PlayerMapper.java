@@ -12,5 +12,8 @@ public interface PlayerMapper {
     @Mapping(source = "name", target = "name")
     Player toPlayerEntity(PlayerNameDto playerNameDto);
 
-    TennisPlayer toTennisPlayer(Player player);
+    /// new one | for DDD
+    Player toPlayerEntity(TennisPlayer tennisPlayer);
+
+    dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer toTennisPlayer(Player player);
 }

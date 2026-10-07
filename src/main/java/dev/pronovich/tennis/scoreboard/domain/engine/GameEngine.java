@@ -3,7 +3,7 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
-import dev.pronovich.tennis.scoreboard.model.Player;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import lombok.Getter;
 
 import java.util.Optional;
@@ -13,7 +13,7 @@ public class GameEngine implements Engine {
 
 
     @Override
-    public Optional<Player> calculation(Player player, MatchScore matchScore) {
+    public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
 
        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);

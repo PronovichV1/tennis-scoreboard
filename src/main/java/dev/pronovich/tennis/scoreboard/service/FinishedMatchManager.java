@@ -1,5 +1,7 @@
 package dev.pronovich.tennis.scoreboard.service;
 import dev.pronovich.tennis.scoreboard.dao.MatchDaoImpl;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
 import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.model.Match;
