@@ -37,13 +37,11 @@ public class MatchManager {
     }
 
 
-    public MatchScore generateMatch(String player1Name, String player2Name) { /// DDD +
-        Player firstPlayer = playerDao.findByName(player1Name).orElseGet(() -> new Player(player1Name));
-        Player secondPayer = playerDao.findByName(player2Name).orElseGet(() -> new Player(player2Name));
-        TennisPlayer tennisPlayer1Domain = new TennisPlayer(firstPlayer.getName());
-        TennisPlayer tennisPlayer2Domain = new TennisPlayer(secondPayer.getName());
-        PlayerScore playerScore1 = new PlayerScore(tennisPlayer1Domain);
-        PlayerScore playerScore2 = new PlayerScore(tennisPlayer2Domain);
+    public MatchScore generateMatch(String player1Name, String player2Name) { /// DDD + second attempt
+        TennisPlayer tennisPlayer1 = new TennisPlayer(player1Name);
+        TennisPlayer tennisPlayer2 = new TennisPlayer(player2Name);
+        PlayerScore playerScore1 = new PlayerScore(tennisPlayer1);
+        PlayerScore playerScore2 = new PlayerScore(tennisPlayer2);
         MatchScore matchScore = new MatchScore(playerScore1, playerScore2);
         ongoingMatches.save(matchScore);
         return matchScore;
@@ -55,9 +53,8 @@ public class MatchManager {
         MatchScore currentMatch = matchScore;
         Optional<TennisPlayer> matchWinner = matchEngine.calculation(tennisPlayer, currentMatch);
         if (matchWinner.isPresent()) {
-            currentMatch.setWinner(matchWinner.get());
             Match finishedMatch = matchMapper.toMatchEntity(currentMatch);
-            finishedMatchManager.save(finishedMatch);
+            Match matchAfterSave = finishedMatchManager.save(finishedMatch);
             ongoingMatches.remove(matchScore.getUuid());
         }
         return currentMatch;

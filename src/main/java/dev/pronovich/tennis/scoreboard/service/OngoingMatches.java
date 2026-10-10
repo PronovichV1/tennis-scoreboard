@@ -5,11 +5,12 @@ import dev.pronovich.tennis.scoreboard.exception.MatchNotExistException;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class OngoingMatches implements OngoingMatchesStorage{
 
-    private static final HashMap<UUID, MatchScore> matchesMap = new HashMap<>();
+    private static final ConcurrentHashMap<UUID, MatchScore> matchesMap = new ConcurrentHashMap<>();
 
     @Override
     public void save(MatchScore match) {

@@ -19,15 +19,12 @@ import java.util.UUID;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name="name", length = 50)
     private String name;
-    @Transient
-    private UUID uuid;
 
     public Player(String name) {
         this.name = name;
-        uuid = UUID.randomUUID();
     }
 
     @Override

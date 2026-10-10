@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,16 +18,19 @@ public class PlayerDaoImpl {
         this.sessionFactory = sessionFactory;
     }
 
-    public Optional<Player> findByName(String name){
+    public List<Player> findByNames(List<String> names){
+        if (names == null || names.isEmpty()){
+            return List.of();
+        }
         try (Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
-            Optional<Player> player = session.
+            List<Player> players = session.
                     createSelectionQuery(
-                            "FROM Player p WHERE p.name = :name", Player.class)
-                    .setParameter("name", name)
-                    .uniqueResultOptional();
+                            "FROM Player p WHERE p.name IN (:names)", Player.class)
+                    .setParameter("names", names)
+                    .getResultList();
             tx.commit();
-            return player;
+            return players;
         }
     }
 }

@@ -47,12 +47,9 @@ public class MatchServlet {
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
     public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){ /// updated
-        String playerName = playerNameDto.name();
+        String playerName = playerNameDto.name(); /// check the name on
         MatchScore matchScore = ongoingMatches.findById(uuid);
-        System.out.println(matchScore.getPlayerScore1().getPlayer().uuid());
-        System.out.println(matchScore.getPlayerScore2().getPlayer().uuid());
         TennisPlayer tennisPlayer = matchScore.getTennisPlayerBy(playerName);
-        System.out.println(tennisPlayer.uuid());
         MatchScore afterCalculation = matchManager.addPointsTo(matchScore, tennisPlayer);
         MatchScoreResponseDto response = matchMapper.toCreateMatchScoreResponseDto(afterCalculation);
        return response;
@@ -60,7 +57,7 @@ public class MatchServlet {
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){ /// +
+    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){ /// second atemp +
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
         MatchScore matchScore = ongoingMatches.findById(matchUuidDto.uuid());
         MatchScoreResponseDto response = matchMapper.toMatchScoreResponseDto(matchScore);
@@ -70,7 +67,7 @@ public class MatchServlet {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// +
+    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// second attemp +
         validation.validate(generatedMatch);
         MatchScore matchScore = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(matchScore);
@@ -86,6 +83,7 @@ public class MatchServlet {
         if (playerName == null || playerName.isBlank()){
             matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
+            System.out.println("inside else");
             matchesPage = finishedMatchManager.getAllMatchesBy(page, playerName);
         }
         List<FinishedMatchResponseDto> matches = matchMapper.toMatchResponseDtoList(matchesPage.matchList());

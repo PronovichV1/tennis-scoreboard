@@ -22,17 +22,14 @@ public class MatchEngine implements Engine {
 
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         Optional<TennisPlayer> gameWinner = gameEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
-
         if (gameWinner.isPresent() || (matchScore.isTieBreak() && gameWinner.isEmpty())){
             setEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
         }
-
         if (matchScore.isMatchedFinished()){
             matchScore.assignTheWinner(concretePlayerScore.getPlayer());
             return Optional.of(concretePlayerScore.getPlayer());
         }
         return Optional.empty();
-
     }
 
 }

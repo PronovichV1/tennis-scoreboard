@@ -1,5 +1,6 @@
 package dev.pronovich.tennis.scoreboard.mapper;
 
+import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.model.Player;
@@ -15,5 +16,6 @@ public interface PlayerMapper {
     /// new one | for DDD
     Player toPlayerEntity(TennisPlayer tennisPlayer);
 
-    dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer toTennisPlayer(Player player);
+    @Mapping(target = "uuid", expression = "java(java.util.UUID.randomUUID())")
+    TennisPlayer toTennisPlayer(Player player);
 }
