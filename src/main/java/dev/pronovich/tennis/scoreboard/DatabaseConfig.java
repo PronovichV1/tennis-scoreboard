@@ -2,24 +2,36 @@ package dev.pronovich.tennis.scoreboard;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.orm.jpa.hibernate.LocalSessionFactoryBean;
 import javax.sql.DataSource;
 import java.util.Properties;
 
 
 @Configuration
+@PropertySource("classpath:application.properties")
 public class DatabaseConfig {
+
+    @Value("${spring.datasource.driver}")
+    private String driverClassName;
+    @Value("${spring.datasource.url}")
+    private String jdbcUrl;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
 
     @Bean
     public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
 
-        hikariConfig.setDriverClassName("org.postgresql.Driver");
-        hikariConfig.setJdbcUrl("jdbc:postgresql://localhost:5432/tennis_score_board");
-        hikariConfig.setUsername("postgres");
-        hikariConfig.setPassword("1234");
+        hikariConfig.setDriverClassName(driverClassName);
+        hikariConfig.setJdbcUrl(jdbcUrl);
+        hikariConfig.setUsername(username);
+        hikariConfig.setPassword(password);
 
         return new HikariDataSource(hikariConfig);
     }
