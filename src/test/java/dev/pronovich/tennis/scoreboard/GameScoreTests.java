@@ -3,8 +3,11 @@ package dev.pronovich.tennis.scoreboard;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
-import dev.pronovich.tennis.scoreboard.domain.engine.ScoreEngine;
+import dev.pronovich.tennis.scoreboard.domain.engine.GameEngine;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.model.Player;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,57 +16,71 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-public class ScoreTests {
+public class GameScoreTests {
 
 
-    /// ADD BEFORE EACH
-    /// ADD BEFORE ALL
+    private static GameEngine gameEngine;
+    private static MatchScore matchScore;
+    private static TennisPlayer concretePlayer;
+    private static TennisPlayer rivalPlayer;
+
+    private PlayerScore concretePlayerMatchScore;
+    private PlayerScore rivalPlayerMatchScore;
+
+
+    @BeforeAll
+    static void setUpBase(){
+        gameEngine = new GameEngine();
+
+        concretePlayer = new TennisPlayer(UUID.randomUUID(), "Bob");
+        rivalPlayer = new TennisPlayer(UUID.randomUUID(), "Jon");
+        matchScore = new MatchScore(
+                new PlayerScore(concretePlayer),
+                new PlayerScore(rivalPlayer));
+    }
+
+
+    @BeforeEach
+    void preSetUpMatchScore(){
+        concretePlayerMatchScore = new PlayerScore(concretePlayer);
+        rivalPlayerMatchScore = new PlayerScore(rivalPlayer);
+        matchScore = new MatchScore(concretePlayerMatchScore, rivalPlayerMatchScore);
+    }
 
 
     @Test
     @DisplayName("Win with advantage: AD - 40")
     void playerWithAdvantageShouldWinTheGame(){
-        /// Arrange
-        ScoreEngine scoreEngine = new ScoreEngine();
-        Player concretePlayer = new Player("Bob");
-        Player rivalPlayer = new Player("Jon");
-        MatchScore matchScore = new MatchScore(
-                new PlayerScore(concretePlayer),
-                new PlayerScore(rivalPlayer));
 
         matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.ADVANTAGE);
         matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.FORTY);
         /// Act
-        scoreEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
         ///Assert
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, matchScore.isGameWon());
+        assertEquals(true, gameWinner.isPresent());
     }
 
     @Test
     @DisplayName("Return to DEUCE: 40 - AD")
     void playerWithAdvantageLosesPointAndScoreReturnsToDeuce(){
-        /// Arrange
-        ScoreEngine scoreEngine = new ScoreEngine();
-        Player concretePlayer = new Player("Bob");
-        Player rivalPlayer = new Player("Jon");
-        MatchScore matchScore = new MatchScore(
-                new PlayerScore(concretePlayer),
-                new PlayerScore(rivalPlayer));
 
         matchScore.getSpecificPlayerScore(concretePlayer).setPoints(Points.FORTY);
         matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(Points.ADVANTAGE);
         /// Act
-        scoreEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
         ///Assert
         assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.FORTY, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
+        assertEquals(true, gameWinner.isEmpty());
     }
 
 
@@ -72,21 +89,14 @@ public class ScoreTests {
     @DisplayName("Base win of the game: 40 - 30")
     void concretePlayerShouldWinGame_WithVariousScoreCombinations(Points concretePlayerPoints, Points rivalPlayerPoints){
 
-        ScoreEngine scoreEngine = new ScoreEngine();
-        Player concretePlayer = new Player("Bob");
-        Player rivalPlayer = new Player("Jon");
-        MatchScore matchScore = new MatchScore(
-                new PlayerScore(concretePlayer),
-                new PlayerScore(rivalPlayer));
-
         matchScore.getSpecificPlayerScore(concretePlayer).setPoints(concretePlayerPoints);
         matchScore.getSpecificPlayerScore(rivalPlayer).setPoints(rivalPlayerPoints);
 
-        scoreEngine.calculation(concretePlayer, matchScore);
+        Optional<TennisPlayer> gameWinner = gameEngine.calculation(concretePlayer, matchScore);
 
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(concretePlayer).getPoints());
         assertEquals(Points.ZERO, matchScore.getSpecificPlayerScore(rivalPlayer).getPoints());
-        assertEquals(true, matchScore.isGameWon());
+        assertEquals(true, gameWinner.isPresent());
     }
 
 

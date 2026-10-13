@@ -1,0 +1,14 @@
+package dev.pronovich.tennis.scoreboard.domain.model;
+
+import java.util.Objects;
+import java.util.UUID;
+
+public record TennisPlayer(UUID uuid, String name) {
+    public TennisPlayer{
+        Objects.requireNonNull(name, "Player name cannot be null");
+    }
+
+    public TennisPlayer(String name) {
+        this(UUID.randomUUID(), name);
+    }
+}

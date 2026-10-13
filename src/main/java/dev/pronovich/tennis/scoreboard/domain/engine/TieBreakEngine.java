@@ -2,34 +2,28 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.model.Player;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 
+import java.util.Optional;
 
-public class TieBreakEngine implements Engine {
-
-
-
+public class TieBreakEngine implements Engine{
 
     @Override
-    public void calculation(Player player, MatchScore matchScore) {
+    public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
-
-        /// increase tieBreakPoints for concretePlayer by 1
         concretePlayerScore.addTieBreakPoints();
-
-        /// if Concrete player has 7 points with range of 2 or more he wins
+        /// TIE-BREAK
+        /// increase tieBreakPoints for concretePlayer by 1
+        /// if Concrete player has 7 points with range of 2 or more, he wins
         if (concretePlayerScore.getTieBreakPoints() >= 7 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)){
             matchScore.deactivateTieBreak();
-            matchScore.setTieBreakWon(true);
+            return Optional.of(concretePlayerScore.getPlayer());
         }
+        return Optional.empty();
     }
-
-
-
 
     private boolean isTieBreakPointsDifferenceMoreThenTwo(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {
-        return concretePlayerScore.getTieBreakPoints() - rivalPlayerScore.getTieBreakPoints() >= 2;
+        return (concretePlayerScore.getTieBreakPoints() - rivalPlayerScore.getTieBreakPoints()) >= 2;
     }
-
 }

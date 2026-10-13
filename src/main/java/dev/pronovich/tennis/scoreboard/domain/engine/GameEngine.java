@@ -3,16 +3,20 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
-import dev.pronovich.tennis.scoreboard.model.Player;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import lombok.Getter;
+<<<<<<< HEAD:src/main/java/dev/pronovich/tennis/scoreboard/domain/engine/ScoreEngine.java
+=======
+
+import java.util.Optional;
+>>>>>>> refactoring:src/main/java/dev/pronovich/tennis/scoreboard/domain/engine/GameEngine.java
 
 @Getter
-public class ScoreEngine implements Engine {
+public class GameEngine implements Engine {
 
 
     @Override
-    public void calculation(Player player, MatchScore matchScore) {
-        matchScore.setGameWon(false);
+    public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
 
        PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
@@ -20,25 +24,24 @@ public class ScoreEngine implements Engine {
         /// 40 / 30,15,0 -> winGame
         if (concretePlayerScore.getPoints() == Points.FORTY &&
                 (rivalPlayerScore.getPoints().compareTo(Points.FORTY) < 0)){
-            matchScore.setGameWon(true);
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
-            return;
+            return Optional.of(concretePlayerScore.getPlayer());
         }
         /// AD / 40  -> winGame
         if (concretePlayerScore.getPoints() == Points.ADVANTAGE &&
         rivalPlayerScore.getPoints() == Points.FORTY){
-            matchScore.setGameWon(true);
             resetPointsOfBothPlayers(concretePlayerScore, rivalPlayerScore);
-            return;
+            return Optional.of(concretePlayerScore.getPlayer());
         }
-
         /// 40 / AD -> 40 / 40
         if (concretePlayerScore.getPoints() == Points.FORTY &&
         rivalPlayerScore.getPoints() == Points.ADVANTAGE){
             rivalPlayerScore.setPoints(Points.FORTY);
-            return;
+            return Optional.empty();
         }
+
         concretePlayerScore.addPoints();
+        return Optional.empty();
     }
 
     private void resetPointsOfBothPlayers(PlayerScore concretePlayerScore, PlayerScore rivalPlayerScore) {

@@ -9,22 +9,22 @@ import java.util.Objects;
 import java.util.UUID;
 
 @Entity
-@Table(name = "names")
+@Table(name = "names",
+        indexes = {
+        @Index(name = "idx_player_name", columnList = "name")
+        })
 @Getter
 @Setter
 @NoArgsConstructor
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    @Column(name="name")
+    private Integer id;
+    @Column(name="name", length = 50)
     private String name;
-    @Transient
-    private UUID uuid;
 
     public Player(String name) {
         this.name = name;
-        uuid = UUID.randomUUID();
     }
 
     @Override

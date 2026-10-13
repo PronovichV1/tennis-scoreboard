@@ -2,71 +2,34 @@ package dev.pronovich.tennis.scoreboard.domain.engine;
 
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
-import dev.pronovich.tennis.scoreboard.model.Player;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
+
+import java.util.Optional;
 
 public class MatchEngine implements Engine {
 
-    private final ScoreEngine scoreEngine;
-    private final TieBreakEngine tieBreak ;
+    private final GameEngine gameEngine;
+    private final SetEngine setEngine ;
 
     public MatchEngine(){
-        this.scoreEngine = new ScoreEngine();
-        this.tieBreak = new TieBreakEngine();
-
+        this.gameEngine = new GameEngine();
+        this.setEngine = new SetEngine();
     }
 
 
     @Override
-    public void calculation(Player player, MatchScore matchScore) {
+    public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
 
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
-        PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
-
-        if (matchScore.isTieBreak()) {
-            tieBreak.calculation(concretePlayerScore.getPlayer(), matchScore);
-        } else {
-            scoreEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+        Optional<TennisPlayer> gameWinner = gameEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+        if (gameWinner.isPresent() || (matchScore.isTieBreak() && gameWinner.isEmpty())){
+            setEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
         }
-
-        /// bad ddd design if  !matchScore().gameIsWon() || (matchScore.isOn && !matchScore.isTieBreakIsWon())
-        if (!matchScore.isGameWon() || (matchScore.isTieBreak() && !matchScore.isTieBreakWon())){
-            return;
+        if (matchScore.isMatchedFinished()){
+            matchScore.assignTheWinner(concretePlayerScore.getPlayer());
+            return Optional.of(concretePlayerScore.getPlayer());
         }
-
-            concretePlayerScore.addGamesScore(); /// add points
-
-            if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
-                matchScore.activateTieBreak();
-                return;
-            }
-
-            if (isPlayerWinSet(matchScore, concretePlayerScore)){ /// win set
-                concretePlayerScore.addSetsScore();
-                concretePlayerScore.resetGames();
-                rivalPlayerScore.resetGames();
-                matchScore.setTieBreakWon(false);
-            }
-
-
-            if (isPlayerWinMatch(player, matchScore)) { /// WINNER
-                matchScore.assignTheWinner(concretePlayerScore.getPlayer());
-            }
-        }
-
-    /// base win
-    private boolean isPlayerWinSet(MatchScore matchScore, PlayerScore concretePLayerScore) {
-        if (concretePLayerScore.getGames() == 6 && matchScore.getAnotherPlayerScore(concretePLayerScore.getPlayer()).getGames() < 5){
-            return true;
-        }
-        if (matchScore.isTieBreakWon()){
-            return true;
-        }
-        return false;
+        return Optional.empty();
     }
 
-    /// best of 3
-    /// Win a whole game
-    public boolean isPlayerWinMatch(Player player, MatchScore matchScore) {
-        return ((matchScore.getSpecificPlayerScore(player).getSets() - (matchScore.getAnotherPlayerScore(player).getSets()) >= 2));
-    }
 }

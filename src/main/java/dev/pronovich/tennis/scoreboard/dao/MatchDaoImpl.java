@@ -37,8 +37,10 @@ public class MatchDaoImpl implements BaseDao<Match>{
             Transaction tx = session.beginTransaction();
 
             List<Match> matchList = session.createQuery(
-                    "SELECT m FROM Match m WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
-                            "OR LOWER(m.player2.name) LIKE LOWER(:name)", Match.class)
+                    "SELECT m FROM Match m " +
+                            "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
+                            "OR LOWER(m.player2.name) LIKE LOWER(:name) " +
+                            "ORDER BY m.id DESC", Match.class)
                     .setParameter("name", playersName)
                     .setFirstResult(fromIndex)
                     .setMaxResults(pageSize)
@@ -53,7 +55,7 @@ public class MatchDaoImpl implements BaseDao<Match>{
         try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
 
-            List<Match> matchList = session.createQuery("SELECT m FROM Match m", Match.class)
+            List<Match> matchList = session.createQuery("SELECT m FROM Match m ORDER BY m.id DESC", Match.class)
                     .getResultList();
 
             tx.commit();

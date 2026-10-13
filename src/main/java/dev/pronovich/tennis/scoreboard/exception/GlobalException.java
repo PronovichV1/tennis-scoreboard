@@ -1,6 +1,7 @@
 package dev.pronovich.tennis.scoreboard.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpServerErrorException;
 
@@ -25,6 +26,16 @@ public class GlobalException{
         response.put("message", ex.getMessage());
         return response;
     }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> handleValidException(MethodArgumentNotValidException ex){
+        Map<String, String> response = new HashMap<>();
+        response.put("message", ex.getMessage());
+        return response;
+    }
+
+
 
 
     @ExceptionHandler(DatabaseException.class)

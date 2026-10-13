@@ -6,6 +6,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
 
+<<<<<<< HEAD
+=======
+import java.util.List;
+>>>>>>> refactoring
 import java.util.Optional;
 
 @Repository
@@ -17,6 +21,7 @@ public class PlayerDaoImpl {
         this.sessionFactory = sessionFactory;
     }
 
+<<<<<<< HEAD
     public Optional<Player> findByName(String name){
         try (Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
@@ -27,6 +32,21 @@ public class PlayerDaoImpl {
                     .uniqueResultOptional();
             tx.commit();
             return player;
+=======
+    public List<Player> findByNames(List<String> names){
+        if (names == null || names.isEmpty()){
+            return List.of();
+        }
+        try (Session session = sessionFactory.openSession()){
+            Transaction tx = session.beginTransaction();
+            List<Player> players = session.
+                    createSelectionQuery(
+                            "FROM Player p WHERE p.name IN (:names)", Player.class)
+                    .setParameter("names", names)
+                    .getResultList();
+            tx.commit();
+            return players;
+>>>>>>> refactoring
         }
     }
 }

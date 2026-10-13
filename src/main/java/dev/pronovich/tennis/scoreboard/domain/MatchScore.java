@@ -1,8 +1,8 @@
 package dev.pronovich.tennis.scoreboard.domain;
 
 
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.exception.PlayerNotExist;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,13 +15,14 @@ import java.util.UUID;
 
 public class MatchScore {
 
+    private UUID uuid;
     private PlayerScore playerScore1;
     private PlayerScore playerScore2;
-    private boolean isTieBreakWon;
-    private boolean isGameWon;
-    private Player winner;
+    private TennisPlayer winner;
+
 
     public MatchScore(PlayerScore playerScore1, PlayerScore playerScore2) {
+        uuid = UUID.randomUUID();
         this.playerScore1 = playerScore1;
         this.playerScore2 = playerScore2;
         winner = null;
@@ -38,17 +39,17 @@ public class MatchScore {
     }
 
 
-    public PlayerScore getSpecificPlayerScore(Player player) {
+    public PlayerScore getSpecificPlayerScore(TennisPlayer tennisPlayer) {
         /// if someone pass
-        if (playerScore1.getPlayer().equals(player)){
+        if (playerScore1.getPlayer().equals(tennisPlayer)){
             return playerScore1;
         } else {
             return playerScore2;
         }
     }
 
-    public PlayerScore getAnotherPlayerScore(Player player) {
-        if (playerScore1.getPlayer().equals(player)) {
+    public PlayerScore getAnotherPlayerScore(TennisPlayer tennisPlayer) {
+        if (playerScore1.getPlayer().equals(tennisPlayer)) {
             return playerScore2;
         } else {
             return playerScore1;
@@ -57,28 +58,31 @@ public class MatchScore {
 
 
     public boolean isTieBreak(){
+
+
         return playerScore1.getTieBreakPoints() != null && playerScore2.getTieBreakPoints() != null;
     }
 
-    public void assignTheWinner(Player player){
-        winner = player;
-    }
 
-
-    public UUID getUuidBy(String name) {
+    public TennisPlayer getTennisPlayerBy(String name) {
         String polishedName = name.toLowerCase(Locale.ROOT).trim();
-        String firstPlayerName = playerScore1.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
-        String secondPlayerName = playerScore2.getPlayer().getName().toLowerCase(Locale.ROOT).trim();
+        String firstPlayerName = playerScore1.getPlayer().name().toLowerCase(Locale.ROOT).trim();
+        String secondPlayerName = playerScore2.getPlayer().name().toLowerCase(Locale.ROOT).trim();
         if (firstPlayerName.equals(polishedName)){
-            return playerScore1.getPlayer().getUuid();
+            return playerScore1.getPlayer();
         }
         if (secondPlayerName.equals(polishedName)){
-            return playerScore2.getPlayer().getUuid();
+            return playerScore2.getPlayer();
         }
         throw  new PlayerNotExist("Player with this uuid is not exist");
     }
 
-    public boolean isTieBreakWon() {
-       return isTieBreakWon;
+    public void assignTheWinner(TennisPlayer tennisPlayer){
+        winner = tennisPlayer;
+    }
+
+
+    public boolean isMatchedFinished() {
+        return playerScore1.getSets() == 2 || playerScore2.getSets() == 2;
     }
 }

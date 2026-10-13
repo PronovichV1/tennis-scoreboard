@@ -1,5 +1,7 @@
 package dev.pronovich.tennis.scoreboard.servlet;
 
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
+import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
@@ -10,8 +12,6 @@ import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
-import dev.pronovich.tennis.scoreboard.model.Match;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.FinishedMatchManager;
 import dev.pronovich.tennis.scoreboard.service.OngoingMatches;
@@ -46,33 +46,36 @@ public class MatchServlet {
 
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){
-        /// add validator for uuid
-        Player player = playerMapper.toPlayerEntity(playerNameDto);
-        Match match = ongoingMatches.findById(uuid);
-        player.setUuid(match.getMatchScore().getUuidBy(player.getName()));
-       Match afterCalculation = matchManager.addPointsTo(match, player);
-       MatchScoreResponseDto response = matchMapper.toCreateMatchScore(afterCalculation);
+    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){ /// updated
+        String playerName = playerNameDto.name(); /// check the name on
+        MatchScore matchScore = ongoingMatches.findById(uuid);
+        TennisPlayer tennisPlayer = matchScore.getTennisPlayerBy(playerName);
+        MatchScore afterCalculation = matchManager.addPointsTo(matchScore, tennisPlayer);
+        MatchScoreResponseDto response = matchMapper.toCreateMatchScoreResponseDto(afterCalculation);
        return response;
     }
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){
+    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){ /// second atemp +
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
-        Match match = ongoingMatches.findById(matchUuidDto.uuid());
-        MatchScoreResponseDto response = matchMapper.toCreateMatchScore(match);
+        MatchScore matchScore = ongoingMatches.findById(matchUuidDto.uuid());
+        MatchScoreResponseDto response = matchMapper.toMatchScoreResponseDto(matchScore);
         return response;
     }
 
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+<<<<<<< HEAD
     public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
         /// add check for name which is already created
+=======
+    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// second attemp +
+>>>>>>> refactoring
         validation.validate(generatedMatch);
-        Match match = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
-        CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(match);
+        MatchScore matchScore = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
+        CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(matchScore);
         return createdMatchDto;
     }
 
@@ -85,6 +88,7 @@ public class MatchServlet {
         if (playerName == null || playerName.isBlank()){
             matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
+            System.out.println("inside else");
             matchesPage = finishedMatchManager.getAllMatchesBy(page, playerName);
         }
         List<FinishedMatchResponseDto> matches = matchMapper.toMatchResponseDtoList(matchesPage.matchList());

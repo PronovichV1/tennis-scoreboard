@@ -1,14 +1,13 @@
 package dev.pronovich.tennis.scoreboard.service;
 
-import dev.pronovich.tennis.scoreboard.model.Match;
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 
-import java.util.Optional;
 import java.util.UUID;
 
 public interface OngoingMatchesStorage {
 
-     void save(Match match);
-     Match findById(UUID id);
+     void save(MatchScore match);
+     MatchScore findById(UUID id);
      /// delete
      void remove(UUID id);
 
