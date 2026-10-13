@@ -1,4 +1,4 @@
-package dev.pronovich.tennis.scoreboard;
+package dev.pronovich.tennis.scoreboard.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
