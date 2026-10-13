@@ -4,7 +4,9 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.orm.jpa.hibernate.LocalSessionFactoryBean;
+import org.springframework.context.annotation.DependsOn;
 import javax.sql.DataSource;
 import java.util.Properties;
 
@@ -25,6 +27,7 @@ public class DatabaseConfig {
     }
 
     @Bean
+    @DependsOn("dataSourceInitializer")
     public LocalSessionFactoryBean sessionFactoryBean(DataSource dataSource){
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource);
