@@ -1,8 +1,8 @@
-package dev.pronovich.tennis.scoreboard;
+package dev.pronovich.tennis.scoreboard.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class WebAppInitializerConfig extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
     protected Class<?> [] getRootConfigClasses() {
         return null;

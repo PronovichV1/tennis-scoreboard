@@ -5,7 +5,6 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import lombok.Getter;
-
 import java.util.Optional;
 
 @Getter

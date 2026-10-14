@@ -5,7 +5,6 @@ import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
 import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
-import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
@@ -37,19 +36,14 @@ public class FinishedMatchManager {
     }
 
 
-    public MatchesPage getAllMatchesBy(Integer page, String playersName){
+    public MatchesPage getAllMatchesForSpecificPlayer(Integer page, String playersName){
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int fromIndex = (page - 1) * pageSize;
-        List<Match> allMatches = matchDao.getAllMatchesFor(playersName, pageSize, fromIndex);
-        if (allMatches.isEmpty()){
-            throw new DatabaseException("The Player " + playersName  + " doesn't have any match yet");
-        }
-        int totalMatches = allMatches.size();
-        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
-        int totalPages = (totalMatches + pageSize - 1) / pageSize;
-        List<Match> matches = allMatches.subList(fromIndex, toIndex);
-        List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
 
+        int offset = (page - 1) * pageSize;
+        long totalMatches = matchDao.countAllMatchesForSpecificPlayer(playersName);
+        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        List<Match> matches = matchDao.getAllMatchesFor(playersName, offset, pageSize);
+        List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
                 page,
                 totalPages,
@@ -59,22 +53,16 @@ public class FinishedMatchManager {
 
     public MatchesPage getAllMatches(Integer page) {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int fromIndex = (page - 1) * pageSize;
-        List<Match> allMatches = matchDao.getAllMatches();
-        int totalMatches = allMatches.size();
-        if (allMatches.isEmpty()){
-            throw new DatabaseException("Database doesn't have any match yet.");
-        }
-        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
-        int totalPages = (totalMatches + pageSize - 1) / pageSize;
-        List<Match> matches = allMatches.subList(fromIndex, toIndex);
+        int offset = (page - 1) * pageSize;
+        long totalMatches = matchDao.countAllMatches();
+        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        List<Match> matches = matchDao.getAllMatches(offset, pageSize);
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
                 page,
                 totalPages,
                 tennisMatches
         );
-
     }
 
     private void prepareExistingPlayers(Match match){
@@ -84,17 +72,16 @@ public class FinishedMatchManager {
         );
 
         List<Player> existing = playerDao.findByNames(playerList);
-        Map<String,Player> map = existing.stream().collect(Collectors.toMap(Player::getName, p->p));
+        Map<String, Player> map = existing.stream().collect(Collectors.toMap(Player::getName, p -> p));
 
+        Player p1 = map.computeIfAbsent(match.getPlayer1().getName(), Player::new);
+        Player p2 = map.computeIfAbsent(match.getPlayer2().getName(), Player::new);
 
-        if (map.containsKey(match.getPlayer1().getName())){
-            match.setPlayer1(map.get(match.getPlayer1().getName()));
-        }
-        if (map.containsKey(match.getPlayer2().getName())){
-            match.setPlayer2(map.get(match.getPlayer2().getName()));
-        }
-        if (match.getWinner() != null && map.containsKey(match.getWinner().getName())) {
-            match.setWinner(map.get(match.getWinner().getName()));
+        match.setPlayer1(p1);
+        match.setPlayer2(p2);
+
+        if (match.getWinner() != null) {
+            match.setWinner(map.computeIfAbsent(match.getWinner().getName(), Player::new));
         }
     }
 }
