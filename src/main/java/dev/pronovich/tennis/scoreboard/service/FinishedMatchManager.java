@@ -39,10 +39,8 @@ public class FinishedMatchManager {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
         int offset = (page - 1) * pageSize;
         long totalMatches = matchDao.countAllMatchesForSpecificPlayer(playersName);
-        System.out.println("Matches counted");
         int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
         List<Match> matches = matchDao.getAllMatchesFor(playersName, offset, pageSize);
-        System.out.println("After get matches from DB");
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
                 page,
