@@ -67,12 +67,7 @@ public class MatchServlet {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-<<<<<<< HEAD
-    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){
-        /// add check for name which is already created
-=======
     public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// second attemp +
->>>>>>> refactoring
         validation.validate(generatedMatch);
         MatchScore matchScore = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(matchScore);
@@ -89,7 +84,7 @@ public class MatchServlet {
             matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
             System.out.println("inside else");
-            matchesPage = finishedMatchManager.getAllMatchesBy(page, playerName);
+            matchesPage = finishedMatchManager.getAllMatchesForSpecificPlayer(page, playerName);
         }
         List<FinishedMatchResponseDto> matches = matchMapper.toMatchResponseDtoList(matchesPage.matchList());
         return new PlayerMatchesResponseDto(

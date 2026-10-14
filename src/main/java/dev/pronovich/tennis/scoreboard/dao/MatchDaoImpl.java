@@ -32,7 +32,7 @@ public class MatchDaoImpl implements BaseDao<Match>{
     }
 
 
-    public List<Match> getAllMatchesFor(String playersName, int pageSize, int fromIndex) {
+    public List<Match> getAllMatchesFor(String name, int offset, int pageSize) {
         try (Session session = sessionFactory.openSession()){
             Transaction tx = session.beginTransaction();
 
@@ -41,8 +41,41 @@ public class MatchDaoImpl implements BaseDao<Match>{
                             "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
                             "OR LOWER(m.player2.name) LIKE LOWER(:name) " +
                             "ORDER BY m.id DESC", Match.class)
-                    .setParameter("name", playersName)
-                    .setFirstResult(fromIndex)
+                    .setParameter("name", name)
+                    .setFirstResult(offset)
+                    .setMaxResults(pageSize)
+                    .getResultList();
+            tx.commit();
+            return matchList;
+        }
+    }
+
+    public long countAllMatchesForSpecificPlayer(String name) {
+        try(Session session = sessionFactory.openSession()){
+            return session.createQuery(
+                    "SELECT COUNT(m) FROM Match m " +
+                            "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
+                            "OR LOWER(m.player2.name) LIKE LOWER(:name) ",
+                    Long.class)
+                    .setParameter("name", name).
+                    getSingleResult();
+        }
+    }
+
+    public long countAllMatches() {
+        try(Session session = sessionFactory.openSession()){
+            return session.createQuery(
+                    "SELECT COUNT(m) FROM Match m",
+                    Long.class
+            ).getSingleResult();
+        }
+    }
+
+    public List<Match> getAllMatches(int offset, int pageSize) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            List<Match> matchList = session.createQuery("SELECT m FROM Match m ORDER BY m.id DESC", Match.class)
+                    .setFirstResult(offset)
                     .setMaxResults(pageSize)
                     .getResultList();
 
@@ -51,15 +84,5 @@ public class MatchDaoImpl implements BaseDao<Match>{
         }
     }
 
-    public List<Match> getAllMatches() {
-        try (Session session = sessionFactory.openSession()) {
-            Transaction tx = session.beginTransaction();
 
-            List<Match> matchList = session.createQuery("SELECT m FROM Match m ORDER BY m.id DESC", Match.class)
-                    .getResultList();
-
-            tx.commit();
-            return matchList;
-        }
-    }
 }

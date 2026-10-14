@@ -5,14 +5,12 @@ import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
 import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.exception.DatabaseException;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
-import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import dev.pronovich.tennis.scoreboard.model.Player;
 import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -37,19 +35,15 @@ public class FinishedMatchManager {
     }
 
 
-    public MatchesPage getAllMatchesBy(Integer page, String playersName){
+    public MatchesPage getAllMatchesForSpecificPlayer(Integer page, String playersName){
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int fromIndex = (page - 1) * pageSize;
-        List<Match> allMatches = matchDao.getAllMatchesFor(playersName, pageSize, fromIndex);
-        if (allMatches.isEmpty()){
-            throw new DatabaseException("The Player " + playersName  + " doesn't have any match yet");
-        }
-        int totalMatches = allMatches.size();
-        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
-        int totalPages = (totalMatches + pageSize - 1) / pageSize;
-        List<Match> matches = allMatches.subList(fromIndex, toIndex);
+        int offset = (page - 1) * pageSize;
+        long totalMatches = matchDao.countAllMatchesForSpecificPlayer(playersName);
+        System.out.println("Matches counted");
+        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        List<Match> matches = matchDao.getAllMatchesFor(playersName, offset, pageSize);
+        System.out.println("After get matches from DB");
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
-
         return new MatchesPage(
                 page,
                 totalPages,
@@ -59,22 +53,16 @@ public class FinishedMatchManager {
 
     public MatchesPage getAllMatches(Integer page) {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
-        int fromIndex = (page - 1) * pageSize;
-        List<Match> allMatches = matchDao.getAllMatches();
-        int totalMatches = allMatches.size();
-        if (allMatches.isEmpty()){
-            throw new DatabaseException("Database doesn't have any match yet.");
-        }
-        int toIndex = Math.min(fromIndex + pageSize, totalMatches);
-        int totalPages = (totalMatches + pageSize - 1) / pageSize;
-        List<Match> matches = allMatches.subList(fromIndex, toIndex);
+        int offset = (page - 1) * pageSize;
+        long totalMatches = matchDao.countAllMatches();
+        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        List<Match> matches = matchDao.getAllMatches(offset, pageSize);
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
                 page,
                 totalPages,
                 tennisMatches
         );
-
     }
 
     private void prepareExistingPlayers(Match match){

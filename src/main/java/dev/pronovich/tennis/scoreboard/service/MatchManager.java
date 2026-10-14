@@ -2,11 +2,8 @@ package dev.pronovich.tennis.scoreboard.service;
 
 
 import dev.pronovich.tennis.scoreboard.dao.PlayerDaoImpl;
-<<<<<<< HEAD
-=======
 import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
->>>>>>> refactoring
 import dev.pronovich.tennis.scoreboard.domain.engine.MatchEngine;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
@@ -26,32 +23,15 @@ public class MatchManager {
     private MatchEngine matchEngine;
     private FinishedMatchManager finishedMatchManager;
     private PlayerDaoImpl playerDao;
-<<<<<<< HEAD
-
-    @Autowired
-    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao) {
-=======
     private PlayerMapper playerMapper; /// remove later
     private MatchMapper matchMapper;
     @Autowired
     public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao
             , PlayerMapper playerMapper,  MatchMapper matchMapper) {
->>>>>>> refactoring
         this.ongoingMatches = ongoingMatches;
         this.matchEngine = new MatchEngine();
         this.finishedMatchManager = finishedMatchManager;
         this.playerDao = playerDao;
-<<<<<<< HEAD
-    }
-
-
-    public Match generateMatch(String player1Name, String player2Name) {
-        Player player1 = playerDao.findByName(player1Name).orElseGet(() -> new Player(player1Name));
-        Player player2 = playerDao.findByName(player2Name).orElseGet(() -> new Player(player2Name));
-        Match match = new Match(player1, player2);
-        ongoingMatches.save(match);
-        return match;
-=======
         this.playerMapper = playerMapper;
         this.matchMapper = matchMapper;
     }
@@ -65,7 +45,6 @@ public class MatchManager {
         MatchScore matchScore = new MatchScore(playerScore1, playerScore2);
         ongoingMatches.save(matchScore);
         return matchScore;
->>>>>>> refactoring
     }
 
 

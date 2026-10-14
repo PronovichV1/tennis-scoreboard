@@ -5,11 +5,9 @@ import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import lombok.Getter;
-<<<<<<< HEAD:src/main/java/dev/pronovich/tennis/scoreboard/domain/engine/ScoreEngine.java
-=======
 
 import java.util.Optional;
->>>>>>> refactoring:src/main/java/dev/pronovich/tennis/scoreboard/domain/engine/GameEngine.java
+
 
 @Getter
 public class GameEngine implements Engine {
