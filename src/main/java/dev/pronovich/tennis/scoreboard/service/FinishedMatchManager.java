@@ -1,4 +1,5 @@
 package dev.pronovich.tennis.scoreboard.service;
+
 import dev.pronovich.tennis.scoreboard.dao.MatchDaoImpl;
 import dev.pronovich.tennis.scoreboard.dao.PlayerDaoImpl;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
@@ -11,7 +12,6 @@ import dev.pronovich.tennis.scoreboard.utils.MatchUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -20,9 +20,10 @@ import java.util.stream.Collectors;
 public class FinishedMatchManager {
 
     private final MatchDaoImpl matchDao;
-    private MatchMapper matchMapper;
-    private PlayerDaoImpl playerDao;
-    public FinishedMatchManager(MatchDaoImpl matchDao,MatchMapper matchMapper, PlayerDaoImpl playerDao) {
+    private final MatchMapper matchMapper;
+    private final PlayerDaoImpl playerDao;
+
+    public FinishedMatchManager(MatchDaoImpl matchDao, MatchMapper matchMapper, PlayerDaoImpl playerDao) {
         this.matchDao = matchDao;
         this.matchMapper = matchMapper;
         this.playerDao = playerDao;
@@ -32,16 +33,16 @@ public class FinishedMatchManager {
     public Match save(Match match) {
         prepareExistingPlayers(match);
         Match matchAfterDao = matchDao.save(match).orElseThrow(() -> new DatabaseException("Match didn't saved by Database"));
-       return matchAfterDao;
+        return matchAfterDao;
     }
 
 
-    public MatchesPage getAllMatchesForSpecificPlayer(Integer page, String playersName){
+    public MatchesPage getAllMatchesForSpecificPlayer(Integer page, String playersName) {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
 
         int offset = (page - 1) * pageSize;
         long totalMatches = matchDao.countAllMatchesForSpecificPlayer(playersName);
-        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        int totalPages = (int) Math.ceil((double) totalMatches / pageSize);
         List<Match> matches = matchDao.getAllMatchesFor(playersName, offset, pageSize);
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
@@ -55,7 +56,7 @@ public class FinishedMatchManager {
         int pageSize = MatchUtils.DEFAULT_PAGE_SIZE;
         int offset = (page - 1) * pageSize;
         long totalMatches = matchDao.countAllMatches();
-        int totalPages = (int) Math.ceil ((double) totalMatches / pageSize);
+        int totalPages = (int) Math.ceil((double) totalMatches / pageSize);
         List<Match> matches = matchDao.getAllMatches(offset, pageSize);
         List<TennisMatch> tennisMatches = matchMapper.toTennisMatchList(matches);
         return new MatchesPage(
@@ -65,7 +66,7 @@ public class FinishedMatchManager {
         );
     }
 
-    private void prepareExistingPlayers(Match match){
+    private void prepareExistingPlayers(Match match) {
         List<String> playerList = List.of(
                 match.getPlayer1().getName(),
                 match.getPlayer2().getName()

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Entity
 @Table(name = "matches")
 @Getter
@@ -19,13 +17,13 @@ public class Match {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name="player1", nullable = false)
+    @JoinColumn(name = "player1", nullable = false)
     private Player player1;
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name="player2", nullable = false)
+    @JoinColumn(name = "player2", nullable = false)
     private Player player2;
     @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name="winner", nullable = false)
+    @JoinColumn(name = "winner", nullable = false)
     private Player winner;
 
     public Match(Player player1, Player player2) {

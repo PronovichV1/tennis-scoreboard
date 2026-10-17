@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS public.names(
+CREATE TABLE IF NOT EXISTS public.players(
 id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 name VARCHAR(255) NOT NULL UNIQUE
 );
@@ -8,8 +8,8 @@ id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
 player1 INT NOT NULL,
 player2 INT NOT NULL,
 winner INT NOT NULL,
-FOREIGN KEY (player1) REFERENCES public.names(id),
-FOREIGN KEY (player2) REFERENCES public.names(id),
-FOREIGN KEY (winner) REFERENCES public.names(id)
+FOREIGN KEY (player1) REFERENCES public.players(id),
+FOREIGN KEY (player2) REFERENCES public.players(id),
+FOREIGN KEY (winner) REFERENCES public.players(id)
 );
 

@@ -9,7 +9,6 @@ import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
 import dev.pronovich.tennis.scoreboard.model.Match;
-import dev.pronovich.tennis.scoreboard.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,15 +18,17 @@ import java.util.Optional;
 public class MatchManager {
 
 
-    private OngoingMatches ongoingMatches;
-    private MatchEngine matchEngine;
-    private FinishedMatchManager finishedMatchManager;
-    private PlayerDaoImpl playerDao;
-    private PlayerMapper playerMapper; /// remove later
-    private MatchMapper matchMapper;
+    private final OngoingMatches ongoingMatches;
+    private final MatchEngine matchEngine;
+    private final FinishedMatchManager finishedMatchManager;
+    private final PlayerDaoImpl playerDao;
+    private final PlayerMapper playerMapper;
+    /// remove later
+    private final MatchMapper matchMapper;
+
     @Autowired
     public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao
-            , PlayerMapper playerMapper,  MatchMapper matchMapper) {
+            , PlayerMapper playerMapper, MatchMapper matchMapper) {
         this.ongoingMatches = ongoingMatches;
         this.matchEngine = new MatchEngine();
         this.finishedMatchManager = finishedMatchManager;
@@ -46,7 +47,6 @@ public class MatchManager {
         ongoingMatches.save(matchScore);
         return matchScore;
     }
-
 
 
     public MatchScore addPointsTo(MatchScore matchScore, TennisPlayer tennisPlayer) { /// DDD+

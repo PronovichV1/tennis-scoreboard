@@ -5,22 +5,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+
 import java.util.List;
 
 
 @Repository
 public class PlayerDaoImpl {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     public PlayerDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-    public List<Player> findByNames(List<String> names){
-        if (names == null || names.isEmpty()){
+
+    public List<Player> findByNames(List<String> names) {
+        if (names == null || names.isEmpty()) {
             return List.of();
         }
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
             List<Player> players = session.
                     createSelectionQuery(

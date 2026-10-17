@@ -4,7 +4,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 public record TennisPlayer(UUID uuid, String name) {
-    public TennisPlayer{
+    public TennisPlayer {
         Objects.requireNonNull(name, "Player name cannot be null");
     }
 

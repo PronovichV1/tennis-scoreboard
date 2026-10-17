@@ -10,6 +10,7 @@ import java.util.Optional;
 public class SetEngine implements Engine {
 
     private final TieBreakEngine tieBreakEngine;
+
     public SetEngine() {
         tieBreakEngine = new TieBreakEngine();
     }
@@ -20,26 +21,26 @@ public class SetEngine implements Engine {
         PlayerScore concretePlayerScore = matchScore.getSpecificPlayerScore(player);
         PlayerScore rivalPlayerScore = matchScore.getAnotherPlayerScore(player);
         /// Is it TieBreak is active?
-        if (matchScore.isTieBreak()){
-           Optional<TennisPlayer> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
-           /// win a set via tie-break or not;
-           if (tieBreakWinner.isPresent()){
-               concretePlayerScore.addSetsScore();
-               resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
-               return Optional.of(concretePlayerScore.getPlayer());
-           }
+        if (matchScore.isTieBreak()) {
+            Optional<TennisPlayer> tieBreakWinner = tieBreakEngine.calculation(concretePlayerScore.getPlayer(), matchScore);
+            /// win a set via tie-break or not;
+            if (tieBreakWinner.isPresent()) {
+                concretePlayerScore.addSetsScore();
+                resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
+                return Optional.of(concretePlayerScore.getPlayer());
+            }
             return Optional.empty();
         }
 
         concretePlayerScore.addGamesScore();
         /// Is tie-break need to be activated
-        if  (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6){ /// tie-break activation
+        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() == 6) { /// tie-break activation
             matchScore.activateTieBreak();
             return Optional.empty();
         }
 
         /// regular set flow
-        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5){
+        if (concretePlayerScore.getGames() == 6 && rivalPlayerScore.getGames() < 5) {
             concretePlayerScore.addSetsScore();
             resetGamesForBothPlayers(concretePlayerScore, rivalPlayerScore);
             return Optional.of(concretePlayerScore.getPlayer());
@@ -52,7 +53,6 @@ public class SetEngine implements Engine {
         concretePlayerScore.resetGames();
         rivalPlayerScore.resetGames();
     }
-
 
 
 }

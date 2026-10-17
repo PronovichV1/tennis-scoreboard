@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 
-
 @Getter
 @Setter
 public class PlayerScore {
@@ -27,23 +26,23 @@ public class PlayerScore {
 
 
     public void addPoints() {
-       this.points = points.nextPoints();
+        this.points = points.nextPoints();
     }
 
-    public void addGamesScore(){
+    public void addGamesScore() {
         games++;
     }
 
-    public void resetGames(){
+    public void resetGames() {
         games = 0;
     }
 
 
-    public void addSetsScore(){
+    public void addSetsScore() {
         sets++;
     }
 
-    public void resetPoints(){
+    public void resetPoints() {
         this.points = Points.ZERO;
     }
 

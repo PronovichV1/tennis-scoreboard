@@ -1,10 +1,13 @@
 package dev.pronovich.tennis.scoreboard.mapper;
 
+import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.PlayerScore;
 import dev.pronovich.tennis.scoreboard.domain.Points;
-import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisMatch;
-import dev.pronovich.tennis.scoreboard.dto.response.*;
+import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
+import dev.pronovich.tennis.scoreboard.dto.response.FinishedMatchResponseDto;
+import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
+import dev.pronovich.tennis.scoreboard.dto.response.PlayerScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.model.Match;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -36,6 +39,7 @@ public interface MatchMapper {
     @Mapping(source = "player2", target = "tennisPlayer2")
     @Mapping(source = "winner", target = "winner")
     TennisMatch toTennisMatchEntity(Match match);
+
     List<TennisMatch> toTennisMatchList(List<Match> matchList);
 
 
@@ -43,9 +47,10 @@ public interface MatchMapper {
     @Mapping(source = "tennisPlayer2.name", target = "secondPlayerName")
     @Mapping(source = "winner.name", target = "winnerName")
     FinishedMatchResponseDto toMatchResponseDto(TennisMatch tennisMatch);
+
     List<FinishedMatchResponseDto> toMatchResponseDtoList(List<TennisMatch> tennisMatch);
 
-    default String mapPoints(Points points){
+    default String mapPoints(Points points) {
         return points != null ? points.getCode() : null;
     }
 

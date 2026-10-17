@@ -28,7 +28,7 @@ public class MatchScore {
         winner = null;
     }
 
-    public void activateTieBreak(){
+    public void activateTieBreak() {
         getPlayerScore1().setTieBreakPoints(0);
         getPlayerScore2().setTieBreakPoints(0);
     }
@@ -41,7 +41,7 @@ public class MatchScore {
 
     public PlayerScore getSpecificPlayerScore(TennisPlayer tennisPlayer) {
         /// if someone pass
-        if (playerScore1.getPlayer().equals(tennisPlayer)){
+        if (playerScore1.getPlayer().equals(tennisPlayer)) {
             return playerScore1;
         } else {
             return playerScore2;
@@ -57,7 +57,7 @@ public class MatchScore {
     }
 
 
-    public boolean isTieBreak(){
+    public boolean isTieBreak() {
 
 
         return playerScore1.getTieBreakPoints() != null && playerScore2.getTieBreakPoints() != null;
@@ -68,16 +68,16 @@ public class MatchScore {
         String polishedName = name.toLowerCase(Locale.ROOT).trim();
         String firstPlayerName = playerScore1.getPlayer().name().toLowerCase(Locale.ROOT).trim();
         String secondPlayerName = playerScore2.getPlayer().name().toLowerCase(Locale.ROOT).trim();
-        if (firstPlayerName.equals(polishedName)){
+        if (firstPlayerName.equals(polishedName)) {
             return playerScore1.getPlayer();
         }
-        if (secondPlayerName.equals(polishedName)){
+        if (secondPlayerName.equals(polishedName)) {
             return playerScore2.getPlayer();
         }
-        throw  new PlayerNotExist("Player with this uuid is not exist");
+        throw new PlayerNotExist("Player with this uuid is not exist");
     }
 
-    public void assignTheWinner(TennisPlayer tennisPlayer){
+    public void assignTheWinner(TennisPlayer tennisPlayer) {
         winner = tennisPlayer;
     }
 

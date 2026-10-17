@@ -2,18 +2,19 @@ package dev.pronovich.tennis.scoreboard.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalException{
+public class GlobalException {
 
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException ex){
+    public Map<String, String> handleIllegalArgumentException(IllegalArgumentException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("message", ex.getMessage());
         return response;
@@ -21,7 +22,7 @@ public class GlobalException{
 
     @ExceptionHandler(MatchNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleMatchNotExistException(MatchNotExistException ex){
+    public Map<String, String> handleMatchNotExistException(MatchNotExistException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("message", ex.getMessage());
         return response;
@@ -29,18 +30,16 @@ public class GlobalException{
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleValidException(MethodArgumentNotValidException ex){
+    public Map<String, String> handleValidException(MethodArgumentNotValidException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("message", ex.getMessage());
         return response;
     }
 
 
-
-
     @ExceptionHandler(DatabaseException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleDatabaseException(DatabaseException ex){
+    public Map<String, String> handleDatabaseException(DatabaseException ex) {
         Map<String, String> response = new HashMap<>();
         response.put("message", ex.getMessage());
         return response;

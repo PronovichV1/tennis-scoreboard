@@ -6,7 +6,7 @@ import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 
 import java.util.Optional;
 
-public class TieBreakEngine implements Engine{
+public class TieBreakEngine implements Engine {
 
     @Override
     public Optional<TennisPlayer> calculation(TennisPlayer player, MatchScore matchScore) {
@@ -16,7 +16,7 @@ public class TieBreakEngine implements Engine{
         /// TIE-BREAK
         /// increase tieBreakPoints for concretePlayer by 1
         /// if Concrete player has 7 points with range of 2 or more, he wins
-        if (concretePlayerScore.getTieBreakPoints() >= 7 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)){
+        if (concretePlayerScore.getTieBreakPoints() >= 7 && isTieBreakPointsDifferenceMoreThenTwo(concretePlayerScore, rivalPlayerScore)) {
             matchScore.deactivateTieBreak();
             return Optional.of(concretePlayerScore.getPlayer());
         }

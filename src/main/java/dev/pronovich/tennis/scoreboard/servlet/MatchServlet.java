@@ -4,16 +4,16 @@ import dev.pronovich.tennis.scoreboard.domain.MatchScore;
 import dev.pronovich.tennis.scoreboard.domain.model.TennisPlayer;
 import dev.pronovich.tennis.scoreboard.dto.MatchesPage;
 import dev.pronovich.tennis.scoreboard.dto.request.GenerateMatchDto;
-import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.request.MatchUuidDto;
+import dev.pronovich.tennis.scoreboard.dto.request.PlayerNameDto;
 import dev.pronovich.tennis.scoreboard.dto.response.CreatedMatchDto;
 import dev.pronovich.tennis.scoreboard.dto.response.FinishedMatchResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.MatchScoreResponseDto;
 import dev.pronovich.tennis.scoreboard.dto.response.PlayerMatchesResponseDto;
 import dev.pronovich.tennis.scoreboard.mapper.MatchMapper;
 import dev.pronovich.tennis.scoreboard.mapper.PlayerMapper;
-import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.FinishedMatchManager;
+import dev.pronovich.tennis.scoreboard.service.MatchManager;
 import dev.pronovich.tennis.scoreboard.service.OngoingMatches;
 import dev.pronovich.tennis.scoreboard.validator.Validator;
 import org.springframework.http.HttpStatus;
@@ -27,14 +27,14 @@ import java.util.UUID;
 @RequestMapping("/matches")
 public class MatchServlet {
 
-    private MatchManager matchManager;
-    private OngoingMatches ongoingMatches;
-    private FinishedMatchManager finishedMatchManager;
-    private MatchMapper matchMapper;
-    private PlayerMapper playerMapper;
-    private Validator validation;
+    private final MatchManager matchManager;
+    private final OngoingMatches ongoingMatches;
+    private final FinishedMatchManager finishedMatchManager;
+    private final MatchMapper matchMapper;
+    private final PlayerMapper playerMapper;
+    private final Validator validation;
 
-    public MatchServlet(MatchManager matchManager, OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, MatchMapper matchMapper,  PlayerMapper playerMapper, Validator validation) {
+    public MatchServlet(MatchManager matchManager, OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, MatchMapper matchMapper, PlayerMapper playerMapper, Validator validation) {
         this.matchManager = matchManager;
         this.ongoingMatches = ongoingMatches;
         this.finishedMatchManager = finishedMatchManager;
@@ -46,18 +46,18 @@ public class MatchServlet {
 
     @PostMapping("/{uuid}/point")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto){ /// updated
+    public MatchScoreResponseDto putPoints(@PathVariable UUID uuid, @RequestBody PlayerNameDto playerNameDto) { /// updated
         String playerName = playerNameDto.name(); /// check the name on
         MatchScore matchScore = ongoingMatches.findById(uuid);
         TennisPlayer tennisPlayer = matchScore.getTennisPlayerBy(playerName);
         MatchScore afterCalculation = matchManager.addPointsTo(matchScore, tennisPlayer);
         MatchScoreResponseDto response = matchMapper.toCreateMatchScoreResponseDto(afterCalculation);
-       return response;
+        return response;
     }
 
     @GetMapping("/{uuid}")
     @ResponseStatus(HttpStatus.OK)
-    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid){ /// second atemp +
+    public MatchScoreResponseDto getMatchScore(@PathVariable UUID uuid) { /// second atemp +
         MatchUuidDto matchUuidDto = new MatchUuidDto(uuid);
         MatchScore matchScore = ongoingMatches.findById(matchUuidDto.uuid());
         MatchScoreResponseDto response = matchMapper.toMatchScoreResponseDto(matchScore);
@@ -67,7 +67,7 @@ public class MatchServlet {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch){ /// second attemp +
+    public CreatedMatchDto createMatch(@RequestBody GenerateMatchDto generatedMatch) { /// second attemp +
         validation.validate(generatedMatch);
         MatchScore matchScore = matchManager.generateMatch(generatedMatch.firstPlayerName(), generatedMatch.secondPlayerName());
         CreatedMatchDto createdMatchDto = matchMapper.toCreatedMatchDto(matchScore);
@@ -76,11 +76,11 @@ public class MatchServlet {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PlayerMatchesResponseDto getAllMatches(@RequestParam (name = "page", required = false, defaultValue = "1") int page,
-                                                  @RequestParam (name = "player_name", required = false) String playerName){
+    public PlayerMatchesResponseDto getAllMatches(@RequestParam(name = "page", required = false, defaultValue = "1") int page,
+                                                  @RequestParam(name = "player_name", required = false) String playerName) {
 
         MatchesPage matchesPage = null;
-        if (playerName == null || playerName.isBlank()){
+        if (playerName == null || playerName.isBlank()) {
             matchesPage = finishedMatchManager.getAllMatches(page);
         } else {
             matchesPage = finishedMatchManager.getAllMatchesForSpecificPlayer(page, playerName);

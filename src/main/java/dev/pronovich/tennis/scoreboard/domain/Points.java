@@ -9,7 +9,7 @@ public enum Points {
 
     private final String value;
 
-    Points(String value){
+    Points(String value) {
         this.value = value;
     }
 
@@ -19,7 +19,7 @@ public enum Points {
 
 
     public Points nextPoints() {
-      return switch (this) {
+        return switch (this) {
             case ZERO -> FIFTEEN;
             case FIFTEEN -> THIRTY;
             case THIRTY -> FORTY;

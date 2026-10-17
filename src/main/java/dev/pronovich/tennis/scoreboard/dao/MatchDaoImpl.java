@@ -12,35 +12,35 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class MatchDaoImpl implements BaseDao<Match>{
+public class MatchDaoImpl implements BaseDao<Match> {
 
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
 
     @Autowired
-    public MatchDaoImpl(SessionFactory sessionFactory){
+    public MatchDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 
     @Override
     public Optional<Match> save(Match match) {
-       try (Session session = sessionFactory.openSession()){
-           Transaction tx = session.beginTransaction();
-           Match savedMatch = session.merge(match);
-           tx.commit();
-           return Optional.of(savedMatch);
-       }
+        try (Session session = sessionFactory.openSession()) {
+            Transaction tx = session.beginTransaction();
+            Match savedMatch = session.merge(match);
+            tx.commit();
+            return Optional.of(savedMatch);
+        }
     }
 
 
     public List<Match> getAllMatchesFor(String name, int offset, int pageSize) {
-        try (Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             Transaction tx = session.beginTransaction();
 
             List<Match> matchList = session.createQuery(
-                    "SELECT m FROM Match m " +
-                            "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
-                            "OR LOWER(m.player2.name) LIKE LOWER(:name) " +
-                            "ORDER BY m.id DESC", Match.class)
+                            "SELECT m FROM Match m " +
+                                    "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
+                                    "OR LOWER(m.player2.name) LIKE LOWER(:name) " +
+                                    "ORDER BY m.id DESC", Match.class)
                     .setParameter("name", name)
                     .setFirstResult(offset)
                     .setMaxResults(pageSize)
@@ -51,19 +51,19 @@ public class MatchDaoImpl implements BaseDao<Match>{
     }
 
     public long countAllMatchesForSpecificPlayer(String name) {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
-                    "SELECT COUNT(m) FROM Match m " +
-                            "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
-                            "OR LOWER(m.player2.name) LIKE LOWER(:name) ",
-                    Long.class)
+                            "SELECT COUNT(m) FROM Match m " +
+                                    "WHERE LOWER(m.player1.name) LIKE LOWER(:name) " +
+                                    "OR LOWER(m.player2.name) LIKE LOWER(:name) ",
+                            Long.class)
                     .setParameter("name", name).
                     getSingleResult();
         }
     }
 
     public long countAllMatches() {
-        try(Session session = sessionFactory.openSession()){
+        try (Session session = sessionFactory.openSession()) {
             return session.createQuery(
                     "SELECT COUNT(m) FROM Match m",
                     Long.class

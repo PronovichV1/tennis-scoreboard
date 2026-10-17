@@ -6,12 +6,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Table(name = "players",
         indexes = {
-        @Index(name = "idx_player_name", columnList = "name")
+                @Index(name = "idx_player_name", columnList = "name")
         })
 @Getter
 @Setter
@@ -20,7 +19,7 @@ public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name="name", length = 50)
+    @Column(name = "name", length = 50)
     private String name;
 
     public Player(String name) {
@@ -29,10 +28,10 @@ public class Player {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj){
+        if (this == obj) {
             return true;
         }
-        if (obj == null || getClass() != obj.getClass()){
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
         Player player = (Player) obj;
