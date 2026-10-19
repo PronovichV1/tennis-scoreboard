@@ -21,19 +21,13 @@ public class MatchManager {
     private final OngoingMatches ongoingMatches;
     private final MatchEngine matchEngine;
     private final FinishedMatchManager finishedMatchManager;
-    private final PlayerDaoImpl playerDao;
-    private final PlayerMapper playerMapper;
-    /// remove later
     private final MatchMapper matchMapper;
 
     @Autowired
-    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, PlayerDaoImpl playerDao
-            , PlayerMapper playerMapper, MatchMapper matchMapper) {
+    public MatchManager(OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, MatchMapper matchMapper) {
         this.ongoingMatches = ongoingMatches;
         this.matchEngine = new MatchEngine();
         this.finishedMatchManager = finishedMatchManager;
-        this.playerDao = playerDao;
-        this.playerMapper = playerMapper;
         this.matchMapper = matchMapper;
     }
 

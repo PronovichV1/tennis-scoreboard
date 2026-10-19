@@ -10,7 +10,7 @@
     </parent>
     <groupId>dev.pronovich</groupId>
     <artifactId>tennis-scoreboard</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>war</packaging>
     <name/>
     <description/>

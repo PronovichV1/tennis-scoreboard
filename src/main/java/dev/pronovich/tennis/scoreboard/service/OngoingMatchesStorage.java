@@ -8,7 +8,6 @@ public interface OngoingMatchesStorage {
 
      void save(MatchScore match);
      MatchScore findById(UUID id);
-     /// delete
      void remove(UUID id);
 
 }

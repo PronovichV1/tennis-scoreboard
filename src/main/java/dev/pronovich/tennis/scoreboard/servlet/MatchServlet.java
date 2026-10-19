@@ -31,15 +31,13 @@ public class MatchServlet {
     private final OngoingMatches ongoingMatches;
     private final FinishedMatchManager finishedMatchManager;
     private final MatchMapper matchMapper;
-    private final PlayerMapper playerMapper;
     private final Validator validation;
 
-    public MatchServlet(MatchManager matchManager, OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, MatchMapper matchMapper, PlayerMapper playerMapper, Validator validation) {
+    public MatchServlet(MatchManager matchManager, OngoingMatches ongoingMatches, FinishedMatchManager finishedMatchManager, MatchMapper matchMapper, Validator validation) {
         this.matchManager = matchManager;
         this.ongoingMatches = ongoingMatches;
         this.finishedMatchManager = finishedMatchManager;
         this.matchMapper = matchMapper;
-        this.playerMapper = playerMapper;
         this.validation = validation;
     }
 
