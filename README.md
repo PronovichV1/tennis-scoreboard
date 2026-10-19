@@ -52,7 +52,7 @@ The application was built to deepen my understanding of Java web development, Sp
 1. Clone the repository:
 
    ``` bash
-   git clone ...
+   git clone https://github.com/PronovichV1/tennis-scoreboard.git
    cd tennis-scoreboard
    ```
 
@@ -79,8 +79,8 @@ The application was built to deepen my understanding of Java web development, Sp
 
 1. **Clone the repository**
    ``` bash
-   git clone ...
-   cd ...
+   git clone https://github.com/PronovichV1/tennis-scoreboard.git
+   cd tennis-scoreboard
    ```
 
 2. **Build the project using Maven**
@@ -190,23 +190,23 @@ mvn test
 
 Example 1 — Regular Game:
 
-``` json
+```json
 {
-  firstPlayer: {
-    name: First Player,
-    points: 40,
-    games: 2,
-    sets: 0,
-    tieBreakPoints: null
-  },
-  secondPlayer: {
-    name: Second Player,
-    points: AD,
-    games: 3,
-    sets: 1,
-    tieBreakPoints: null
-  },
-  winnerName: null
+   "firstPlayer": {
+      "name": "First Player",
+      "points": 40,
+      "games": 2,
+      "sets": 0,
+      "tieBreakPoints": null
+   },
+   "secondPlayer": {
+      "name": "Second Player",
+      "points": "AD",
+      "games": 3,
+      "sets": 1,
+      "tieBreakPoints": null
+   },
+   "winnerName": null
 }
 ```
 
